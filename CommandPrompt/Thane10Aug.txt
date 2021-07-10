@@ -1,0 +1,491 @@
+Microsoft Windows [Version 10.0.17134.885]
+(c) 2018 Microsoft Corporation. All rights reserved.
+
+C:\Program Files\MySQL\MySQL Server 8.0\bin>mysql -u root -pabc456
+mysql: [Warning] Using a password on the command line interface can be insecure.
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.11 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> create database if not exists thane10aug;
+Query OK, 1 row affected (0.35 sec)
+
+mysql> use thane10aug;
+Database changed
+mysql> create table tp1
+    -> (
+    -> a tinyint
+    -> );
+Query OK, 0 rows affected (1.04 sec)
+
+mysql> desc tp1;;
++-------+------------+------+-----+---------+-------+
+| Field | Type       | Null | Key | Default | Extra |
++-------+------------+------+-----+---------+-------+
+| a     | tinyint(4) | YES  |     | NULL    |       |
++-------+------------+------+-----+---------+-------+
+1 row in set (0.14 sec)
+
+ERROR:
+No query specified
+
+mysql> insert into tp1 values(10);
+Query OK, 1 row affected (0.21 sec)
+
+mysql> insert into tp1 values(-20);
+Query OK, 1 row affected (0.12 sec)
+
+mysql> desc tp1;
++-------+------------+------+-----+---------+-------+
+| Field | Type       | Null | Key | Default | Extra |
++-------+------------+------+-----+---------+-------+
+| a     | tinyint(4) | YES  |     | NULL    |       |
++-------+------------+------+-----+---------+-------+
+1 row in set (0.00 sec)
+
+mysql> select * from tp1;
++------+
+| a    |
++------+
+|   10 |
+|  -20 |
++------+
+2 rows in set (0.00 sec)
+
+mysql> create table tp2
+    -> (
+    -> a tinyint unsigned
+    -> );
+Query OK, 0 rows affected (0.59 sec)
+
+mysql> insert into tp2 values(200);
+Query OK, 1 row affected (0.25 sec)
+
+mysql> insert into tp2 values(400);
+ERROR 1264 (22003): Out of range value for column 'a' at row 1
+mysql> desc tp2;
++-------+---------------------+------+-----+---------+-------+
+| Field | Type                | Null | Key | Default | Extra |
++-------+---------------------+------+-----+---------+-------+
+| a     | tinyint(3) unsigned | YES  |     | NULL    |       |
++-------+---------------------+------+-----+---------+-------+
+1 row in set (0.00 sec)
+
+mysql> insert into tp2 values();
+Query OK, 1 row affected (0.13 sec)
+
+mysql> select * from tp2;
++------+
+| a    |
++------+
+|  200 |
+| NULL |
++------+
+2 rows in set (0.00 sec)
+
+mysql> create table tp3 (a tinyint unsigned not null );
+Query OK, 0 rows affected (0.44 sec)
+
+mysql> insert into tp3 valiues(null);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'valiues(null)' at line 1
+mysql> select * from tp3;
+Empty set (0.00 sec)
+
+mysql> create table tp4 (a tinyint unsigned not null default 0);
+Query OK, 0 rows affected (0.49 sec)
+
+mysql> insert into tp4 values(null);
+ERROR 1048 (23000): Column 'a' cannot be null
+mysql> insert into tp4 values(default);
+Query OK, 1 row affected (0.24 sec)
+
+mysql> select * from tp4;
++---+
+| a |
++---+
+| 0 |
++---+
+1 row in set (0.00 sec)
+
+mysql> create table tp5 (a tinyint(7) zerofill);
+Query OK, 0 rows affected (0.45 sec)
+
+mysql> desc tp5;
++-------+------------------------------+------+-----+---------+-------+
+| Field | Type                         | Null | Key | Default | Extra |
++-------+------------------------------+------+-----+---------+-------+
+| a     | tinyint(7) unsigned zerofill | YES  |     | NULL    |       |
++-------+------------------------------+------+-----+---------+-------+
+1 row in set (0.00 sec)
+
+mysql> insert into tp5 values(123);
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into tp5 values(300);
+ERROR 1264 (22003): Out of range value for column 'a' at row 1
+mysql> select * from tp5;
++---------+
+| a       |
++---------+
+| 0000123 |
++---------+
+1 row in set (0.00 sec)
+
+mysql> create table tp7 (a int primary key auto_increment);
+Query OK, 0 rows affected (0.48 sec)
+
+mysql> insert into tp7 values();
+Query OK, 1 row affected (0.17 sec)
+
+mysql> insert into tp7 values();
+Query OK, 1 row affected (0.10 sec)
+
+mysql> insert into tp7 values();
+Query OK, 1 row affected (0.14 sec)
+
+mysql> insert into tp7 values(11);
+Query OK, 1 row affected (0.14 sec)
+
+mysql> select * from tp7;
++----+
+| a  |
++----+
+|  1 |
+|  2 |
+|  3 |
+| 11 |
++----+
+4 rows in set (0.00 sec)
+
+mysql> insert into tp7 values(6);
+Query OK, 1 row affected (0.17 sec)
+
+mysql> select * from tp7;
++----+
+| a  |
++----+
+|  1 |
+|  2 |
+|  3 |
+|  6 |
+| 11 |
++----+
+5 rows in set (0.00 sec)
+
+mysql> select last_insert_id();
++------------------+
+| last_insert_id() |
++------------------+
+|                3 |
++------------------+
+1 row in set (0.01 sec)
+
+mysql> insert into tp7 values(5);
+Query OK, 1 row affected (0.16 sec)
+
+mysql> select * from tp7;
++----+
+| a  |
++----+
+|  1 |
+|  2 |
+|  3 |
+|  5 |
+|  6 |
+| 11 |
++----+
+6 rows in set (0.00 sec)
+
+mysql> select last_insert_id();
++------------------+
+| last_insert_id() |
++------------------+
+|                3 |
++------------------+
+1 row in set (0.00 sec)
+
+mysql> create table tp8(a int primary key auto_increment, b int unique auto_increment);
+ERROR 1075 (42000): Incorrect table definition; there can be only one auto column and it must be defined as a key
+mysql> insert into tp8 values(12345.6789);
+ERROR 1146 (42S02): Table 'thane10aug.tp8' doesn't exist
+mysql> create table tp9 (salary float(8, 2) );
+Query OK, 0 rows affected (0.55 sec)
+
+mysql> insert into tp8 values(12345.6789);
+ERROR 1146 (42S02): Table 'thane10aug.tp8' doesn't exist
+mysql> insert into tp9 values(12345.6789);
+Query OK, 1 row affected (0.13 sec)
+
+mysql> select * from tp9;
++----------+
+| salary   |
++----------+
+| 12345.68 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> create table tp10 (name char(5));
+Query OK, 0 rows affected (0.55 sec)
+
+mysql> insert into tp10 values('om');
+Query OK, 1 row affected (0.14 sec)
+
+mysql> insert into tp10 values('prathamesh');
+ERROR 1406 (22001): Data too long for column 'name' at row 1
+mysql> insert into tp10 values('o123h');
+Query OK, 1 row affected (0.08 sec)
+
+mysql> create table tp10( yoe enum('fe', 'se', 'te', 'be'));
+ERROR 1050 (42S01): Table 'tp10' already exists
+mysql> create table tp11( yoe enum('fe', 'se', 'te', 'be'));
+Query OK, 0 rows affected (0.47 sec)
+
+mysql> insert into tp11 values('se');
+Query OK, 1 row affected (0.23 sec)
+
+mysql> insert into tp11 values('fe');
+Query OK, 1 row affected (0.16 sec)
+
+mysql> insert into tp11 values('je');
+ERROR 1265 (01000): Data truncated for column 'yoe' at row 1
+mysql> desc tp11;
++-------+---------------------------+------+-----+---------+-------+
+| Field | Type                      | Null | Key | Default | Extra |
++-------+---------------------------+------+-----+---------+-------+
+| yoe   | enum('fe','se','te','be') | YES  |     | NULL    |       |
++-------+---------------------------+------+-----+---------+-------+
+1 row in set (0.11 sec)
+
+mysql> create table tp12( yoe enum('fe', 'se', 'te', 'be') defalut fe);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'defalut fe)' at line 1
+mysql> create table tp12( yoe enum('fe', 'se', 'te', 'be') default fe);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'fe)' at line 1
+mysql> create table tp12( yoe enum('fe', 'se', 'te', 'be') default 'fe');
+Query OK, 0 rows affected (0.58 sec)
+
+mysql> insert into tp11 values();
+Query OK, 1 row affected (0.09 sec)
+
+mysql> desc tp12;
++-------+---------------------------+------+-----+---------+-------+
+| Field | Type                      | Null | Key | Default | Extra |
++-------+---------------------------+------+-----+---------+-------+
+| yoe   | enum('fe','se','te','be') | YES  |     | fe      |       |
++-------+---------------------------+------+-----+---------+-------+
+1 row in set (0.00 sec)
+
+mysql> create table tp13( yoe enum('fe', 'se', 'te', 'be') not NULL default 'fe');
+Query OK, 0 rows affected (0.42 sec)
+
+mysql> insert into tp11 values();
+Query OK, 1 row affected (0.08 sec)
+
+mysql> insert into tp11 values(null);
+Query OK, 1 row affected (0.18 sec)
+
+mysql> desc tp13;
++-------+---------------------------+------+-----+---------+-------+
+| Field | Type                      | Null | Key | Default | Extra |
++-------+---------------------------+------+-----+---------+-------+
+| yoe   | enum('fe','se','te','be') | NO   |     | fe      |       |
++-------+---------------------------+------+-----+---------+-------+
+1 row in set (0.00 sec)
+
+mysql> select * from tp13;
+Empty set (0.00 sec)
+
+mysql> create table tp14 (accom set('red chutney', 'sambhar', 'green chutney'));
+Query OK, 0 rows affected (0.45 sec)
+
+mysql> insert into tp14 values('sambhar');
+Query OK, 1 row affected (0.09 sec)
+
+mysql> insert into tp14 values('sambhar, green chutney');
+ERROR 1265 (01000): Data truncated for column 'accom' at row 1
+mysql> insert into tp14 values('sambhar, chutney');
+ERROR 1265 (01000): Data truncated for column 'accom' at row 1
+mysql> insert into tp14 values('sambhar,chutney');
+ERROR 1265 (01000): Data truncated for column 'accom' at row 1
+mysql> create table student
+    -> (
+    -> name varchar(5)
+    -> );
+Query OK, 0 rows affected (0.72 sec)
+
+mysql> alter table student
+    -> add phone varchar(10);
+Query OK, 0 rows affected (1.16 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc student;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| name  | varchar(5)  | YES  |     | NULL    |       |
+| phone | varchar(10) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+2 rows in set (0.02 sec)
+
+mysql> alter table student
+    -> add address varchar(100),
+    -> add email varchar(50);
+Query OK, 0 rows affected (2.26 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc student;
++---------+--------------+------+-----+---------+-------+
+| Field   | Type         | Null | Key | Default | Extra |
++---------+--------------+------+-----+---------+-------+
+| name    | varchar(5)   | YES  |     | NULL    |       |
+| phone   | varchar(10)  | YES  |     | NULL    |       |
+| address | varchar(100) | YES  |     | NULL    |       |
+| email   | varchar(50)  | YES  |     | NULL    |       |
++---------+--------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> alter table student
+    -> add rno int(5) first;
+Query OK, 0 rows affected (0.77 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc student;
++---------+--------------+------+-----+---------+-------+
+| Field   | Type         | Null | Key | Default | Extra |
++---------+--------------+------+-----+---------+-------+
+| rno     | int(5)       | YES  |     | NULL    |       |
+| name    | varchar(5)   | YES  |     | NULL    |       |
+| phone   | varchar(10)  | YES  |     | NULL    |       |
+| address | varchar(100) | YES  |     | NULL    |       |
+| email   | varchar(50)  | YES  |     | NULL    |       |
++---------+--------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> alter table student
+    -> add a_card varchar(30) after phone;
+Query OK, 0 rows affected (0.73 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc student;
++---------+--------------+------+-----+---------+-------+
+| Field   | Type         | Null | Key | Default | Extra |
++---------+--------------+------+-----+---------+-------+
+| rno     | int(5)       | YES  |     | NULL    |       |
+| name    | varchar(5)   | YES  |     | NULL    |       |
+| phone   | varchar(10)  | YES  |     | NULL    |       |
+| a_card  | varchar(30)  | YES  |     | NULL    |       |
+| address | varchar(100) | YES  |     | NULL    |       |
+| email   | varchar(50)  | YES  |     | NULL    |       |
++---------+--------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> alter table student
+    -> modify name varchar(100);
+Query OK, 0 rows affected (1.43 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc student;
++---------+--------------+------+-----+---------+-------+
+| Field   | Type         | Null | Key | Default | Extra |
++---------+--------------+------+-----+---------+-------+
+| rno     | int(5)       | YES  |     | NULL    |       |
+| name    | varchar(100) | YES  |     | NULL    |       |
+| phone   | varchar(10)  | YES  |     | NULL    |       |
+| a_card  | varchar(30)  | YES  |     | NULL    |       |
+| address | varchar(100) | YES  |     | NULL    |       |
+| email   | varchar(50)  | YES  |     | NULL    |       |
++---------+--------------+------+-----+---------+-------+
+6 rows in set (0.04 sec)
+
+mysql> alter table student
+    -> modify address varchar(50) not null default 'mumbai';
+Query OK, 0 rows affected (1.24 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc student;
++---------+--------------+------+-----+---------+-------+
+| Field   | Type         | Null | Key | Default | Extra |
++---------+--------------+------+-----+---------+-------+
+| rno     | int(5)       | YES  |     | NULL    |       |
+| name    | varchar(100) | YES  |     | NULL    |       |
+| phone   | varchar(10)  | YES  |     | NULL    |       |
+| a_card  | varchar(30)  | YES  |     | NULL    |       |
+| address | varchar(50)  | NO   |     | mumbai  |       |
+| email   | varchar(50)  | YES  |     | NULL    |       |
++---------+--------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> alter table student
+    -> change name s_name varchar(100);
+Query OK, 0 rows affected (0.17 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc student;
++---------+--------------+------+-----+---------+-------+
+| Field   | Type         | Null | Key | Default | Extra |
++---------+--------------+------+-----+---------+-------+
+| rno     | int(5)       | YES  |     | NULL    |       |
+| s_name  | varchar(100) | YES  |     | NULL    |       |
+| phone   | varchar(10)  | YES  |     | NULL    |       |
+| a_card  | varchar(30)  | YES  |     | NULL    |       |
+| address | varchar(50)  | NO   |     | mumbai  |       |
+| email   | varchar(50)  | YES  |     | NULL    |       |
++---------+--------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> alter table student
+    -> chnage address home varchar(50);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'chnage address home varchar(50)' at line 2
+mysql> alter table student
+    -> change address home varchar(50);
+Query OK, 0 rows affected (0.88 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc student;
++--------+--------------+------+-----+---------+-------+
+| Field  | Type         | Null | Key | Default | Extra |
++--------+--------------+------+-----+---------+-------+
+| rno    | int(5)       | YES  |     | NULL    |       |
+| s_name | varchar(100) | YES  |     | NULL    |       |
+| phone  | varchar(10)  | YES  |     | NULL    |       |
+| a_card | varchar(30)  | YES  |     | NULL    |       |
+| home   | varchar(50)  | YES  |     | NULL    |       |
+| email  | varchar(50)  | YES  |     | NULL    |       |
++--------+--------------+------+-----+---------+-------+
+6 rows in set (0.01 sec)
+
+mysql> alter table student
+    -> drop a_card varchar(30);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'varchar(30)' at line 2
+mysql> alter table student
+    -> drop a_card ;
+Query OK, 0 rows affected (1.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc student;
++--------+--------------+------+-----+---------+-------+
+| Field  | Type         | Null | Key | Default | Extra |
++--------+--------------+------+-----+---------+-------+
+| rno    | int(5)       | YES  |     | NULL    |       |
+| s_name | varchar(100) | YES  |     | NULL    |       |
+| phone  | varchar(10)  | YES  |     | NULL    |       |
+| home   | varchar(50)  | YES  |     | NULL    |       |
+| email  | varchar(50)  | YES  |     | NULL    |       |
++--------+--------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> alter table student
+    -> ;
+Query OK, 0 rows affected (0.12 sec)
+
+mysql> rename table student to student_mumbai;
+Query OK, 0 rows affected (0.42 sec)
+
+mysql>

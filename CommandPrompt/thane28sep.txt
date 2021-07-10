@@ -1,0 +1,326 @@
+Microsoft Windows [Version 10.0.18362.356]
+(c) 2019 Microsoft Corporation. All rights reserved.
+
+C:\Program Files\MySQL\MySQL Server 8.0\bin>mysql -u root -pabc456
+mysql: [Warning] Using a password on the command line interface can be insecure.
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.11 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> create database if not exists thane28sep;
+Query OK, 1 row affected (2.14 sec)
+
+mysql> use thane28sep;
+Database changed
+mysql> G:\demo\MYSQL\thane28sep\p1.sql;
+    -> G:\demo\MYSQL\thane28sep\p1.sql
+    -> ;
+    -> ^C
+mysql> source G:\demo\MYSQL\thane28sep\p1.sql
+Query OK, 0 rows affected, 1 warning (0.24 sec)
+
+Query OK, 0 rows affected (0.14 sec)
+
+mysql> call p1('java' @res);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '@res)' at line 1
+mysql> call p1('java', @res);
+Query OK, 1 row affected (0.16 sec)
+
+mysql> call @res;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '@res' at line 1
+mysql> call p1(@res);
+ERROR 1318 (42000): Incorrect number of arguments for PROCEDURE thane28sep.p1; expected 2, got 1
+mysql> select @res;
++------+
+| @res |
++------+
+| yes  |
++------+
+1 row in set (0.00 sec)
+
+mysql> call p1('python', @res);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select @res;
++------+
+| @res |
++------+
+| no   |
++------+
+1 row in set (0.00 sec)
+
+mysql> select floor(rand() * 10);
++--------------------+
+| floor(rand() * 10) |
++--------------------+
+|                  2 |
++--------------------+
+1 row in set (0.11 sec)
+
+mysql> select ceiling(rand() * 10);
++----------------------+
+| ceiling(rand() * 10) |
++----------------------+
+|                   10 |
++----------------------+
+1 row in set (0.02 sec)
+
+mysql> source G:\demo\MYSQL\thane28sep\p2.sql
+Query OK, 0 rows affected, 1 warning (0.03 sec)
+
+Query OK, 0 rows affected (0.16 sec)
+
+mysql> call (p2, @res);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(p2, @res)' at line 1
+mysql> call p2(40, @res);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select @res;
++------+
+| @res |
++------+
+|   28 |
++------+
+1 row in set (0.00 sec)
+
+mysql> create table if not exists stu_20;
+ERROR 1113 (42000): A table must have at least 1 column
+mysql> create table if not exists stu_20(rno int primary key, name varchar(10), marks int, sphone int(10), dphone int (10), mphone int(10)
+    -> );
+Query OK, 0 rows affected (0.84 sec)
+
+mysql> insert into stu_20 values(1, 'amit', 55, 565, 766, 898);
+Query OK, 1 row affected (0.30 sec)
+
+mysql> insert into stu_20 values(2, 'sumit', 35, 343, null, 898);
+Query OK, 1 row affected (0.15 sec)
+
+mysql> insert into stu_20 values(3, 'rumit', 87, 434, 454, null);
+Query OK, 1 row affected (0.11 sec)
+
+mysql> insert into stu_20 values(4, 'simmy', 75, 898, null, null);
+Query OK, 1 row affected (0.20 sec)
+
+mysql> select * from stu_20;
++-----+-------+-------+--------+--------+--------+
+| rno | name  | marks | sphone | dphone | mphone |
++-----+-------+-------+--------+--------+--------+
+|   1 | amit  |    55 |    565 |    766 |    898 |
+|   2 | sumit |    35 |    343 |   NULL |    898 |
+|   3 | rumit |    87 |    434 |    454 |   NULL |
+|   4 | simmy |    75 |    898 |   NULL |   NULL |
++-----+-------+-------+--------+--------+--------+
+4 rows in set (0.03 sec)
+
+mysql> select rno, name, marks if(marks > 40, 'pass', 'fail') from stu_20;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'if(marks > 40, 'pass', 'fail') from stu_20' at line 1
+mysql> select rno, name, marks if(marks > 40, 'pass', 'fail') from stu_20;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'if(marks > 40, 'pass', 'fail') from stu_20' at line 1
+mysql> select rno, name
+    -> ;
+ERROR 1054 (42S22): Unknown column 'rno' in 'field list'
+mysql> select rno, name
+    -> case when marks > 40
+    -> then 'pass'
+    -> else
+    -> 'fail'
+    -> end
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'case when marks > 40
+then 'pass'
+else
+'fail'
+end' at line 2
+mysql> select rno, name
+    -> case when marks > 40 then 'pass'
+    -> else
+    -> 'fail'
+    -> end
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'case when marks > 40 then 'pass'
+else
+'fail'
+end' at line 2
+mysql> source G:\demo\MYSQL\thane28sep\p3.sql
+Query OK, 0 rows affected, 1 warning (0.12 sec)
+
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'if (marks > 40 , 'pass', 'fail') as result from stu_20;
+
+end' at line 4
+mysql> source G:\demo\MYSQL\thane28sep\p3.sql
+Query OK, 0 rows affected, 1 warning (0.07 sec)
+
+Query OK, 0 rows affected (0.22 sec)
+
+mysql> call p3();
++-----+-------+--------+
+| rno | name  | result |
++-----+-------+--------+
+|   1 | amit  | Pass   |
+|   2 | sumit | fail   |
+|   3 | rumit | Pass   |
+|   4 | simmy | Pass   |
++-----+-------+--------+
+4 rows in set (0.00 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> source G:\demo\MYSQL\thane28sep\p4.sql
+Query OK, 0 rows affected, 1 warning (1.05 sec)
+
+Query OK, 0 rows affected (0.17 sec)
+
+mysql> call p4();
++-----+-------+---------+
+| rno | name  | CONTACT |
++-----+-------+---------+
+|   1 | amit  |     766 |
+|   2 | sumit |     898 |
+|   3 | rumit |     454 |
+|   4 | simmy |     898 |
++-----+-------+---------+
+4 rows in set (0.00 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> source G:\demo\MYSQL\thane28sep\p5.sql
+Query OK, 0 rows affected, 1 warning (0.04 sec)
+
+ERROR 1582 (42000): Incorrect parameter count in the call to native function 'ifnull'
+mysql> source G:\demo\MYSQL\thane28sep\p5.sql
+Query OK, 0 rows affected, 1 warning (0.03 sec)
+
+Query OK, 0 rows affected (0.15 sec)
+
+mysql> call p5();
++--------+
+| result |
++--------+
+|      0 |
+|      1 |
+|      0 |
+|      1 |
++--------+
+4 rows in set (0.00 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> select * from stu_20
+    -> where isnull(dphone);
++-----+-------+-------+--------+--------+--------+
+| rno | name  | marks | sphone | dphone | mphone |
++-----+-------+-------+--------+--------+--------+
+|   2 | sumit |    35 |    343 |   NULL |    898 |
+|   4 | simmy |    75 |    898 |   NULL |   NULL |
++-----+-------+-------+--------+--------+--------+
+2 rows in set (0.00 sec)
+
+mysql> select rno, name,
+    -> case when marks > 80 then 'grade A'
+    -> when marks > 60 then 'grade B'
+    -> else 'grade c' end as GRADE from stu_20;
++-----+-------+---------+
+| rno | name  | GRADE   |
++-----+-------+---------+
+|   1 | amit  | grade c |
+|   2 | sumit | grade c |
+|   3 | rumit | grade A |
+|   4 | simmy | grade B |
++-----+-------+---------+
+4 rows in set (0.00 sec)
+
+mysql> source G:\demo\MYSQL\thane28sep\p6.sql
+Query OK, 0 rows affected, 1 warning (0.02 sec)
+
+Query OK, 0 rows affected (0.15 sec)
+
+mysql> call p6(30.2. 'fah', @reh);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '. 'fah', @reh)' at line 1
+mysql> call p6(30.2. 'fah', @res);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '. 'fah', @res)' at line 1
+mysql> call p6(30.2. "fah", @res);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '. "fah", @res)' at line 1
+mysql> select rno, name, if(marks > 40 , 'pass', 'fail') as RESULT from stu_20;
++-----+-------+--------+
+| rno | name  | RESULT |
++-----+-------+--------+
+|   1 | amit  | pass   |
+|   2 | sumit | fail   |
+|   3 | rumit | pass   |
+|   4 | simmy | pass   |
++-----+-------+--------+
+4 rows in set (0.00 sec)
+
+mysql> select rno, name, coalesce(dphone, mphone, sphone) as CONTACT from stu_20;
++-----+-------+---------+
+| rno | name  | CONTACT |
++-----+-------+---------+
+|   1 | amit  |     766 |
+|   2 | sumit |     898 |
+|   3 | rumit |     454 |
+|   4 | simmy |     898 |
++-----+-------+---------+
+4 rows in set (0.00 sec)
+
+mysql> select * from stu_20
+    -> where isnull(dphone);
++-----+-------+-------+--------+--------+--------+
+| rno | name  | marks | sphone | dphone | mphone |
++-----+-------+-------+--------+--------+--------+
+|   2 | sumit |    35 |    343 |   NULL |    898 |
+|   4 | simmy |    75 |    898 |   NULL |   NULL |
++-----+-------+-------+--------+--------+--------+
+2 rows in set (0.00 sec)
+
+mysql> select rno, name,
+    -> case when marks > 80 then 'Grade A'
+    -> when marks > 60 then 'Grade B'
+    -> else 'Grade C' end as GRADE from stu_20;
++-----+-------+---------+
+| rno | name  | GRADE   |
++-----+-------+---------+
+|   1 | amit  | Grade C |
+|   2 | sumit | Grade C |
+|   3 | rumit | Grade A |
+|   4 | simmy | Grade B |
++-----+-------+---------+
+4 rows in set (0.00 sec)
+
+mysql> source G:\demo\MYSQL\thane28sep\p6.sql
+Query OK, 0 rows affected (0.28 sec)
+
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> call p6();
+ERROR 1318 (42000): Incorrect number of arguments for PROCEDURE thane28sep.p6; expected 3, got 0
+mysql> call p6(30.2, 2, @res);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select @res;
++------+
+| @res |
++------+
+|   -1 |
++------+
+1 row in set (0.00 sec)
+
+mysql> call p6(80.2, 2, @res);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select @res;
++-------+
+| @res  |
++-------+
+| 26.78 |
++-------+
+1 row in set (0.00 sec)
+
+mysql>

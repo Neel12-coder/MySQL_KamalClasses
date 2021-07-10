@@ -1,0 +1,390 @@
+Microsoft Windows [Version 10.0.18362.418]
+(c) 2019 Microsoft Corporation. All rights reserved.
+
+C:\Program Files\MySQL\MySQL Server 8.0\bin>mysql -u root -pabc456
+mysql: [Warning] Using a password on the command line interface can be insecure.
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.11 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> create database if not exists thane12oct
+    -> ;
+Query OK, 1 row affected (0.99 sec)
+
+mysql> use thane12oct;
+Database changed
+mysql> create table if not exists student(rno int primary key
+    -> ,
+    -> name varchar(30),
+    -> marks int,
+    -> gender enum('m', 'f'),
+    -> location varchar(30) default 'thane');
+Query OK, 0 rows affected (2.31 sec)
+
+mysql> insert into student values(10, 'amit', 99, 'm', default);
+Query OK, 1 row affected (1.27 sec)
+
+mysql> insert into student values(30, 'smita', 86, 'f', kalyan);
+ERROR 1054 (42S22): Unknown column 'kalyan' in 'field list'
+mysql> insert into student values(30, 'smita', 86, 'f', 'kalyan');
+Query OK, 1 row affected (0.21 sec)
+
+mysql> insert into student values(20, 'sunil', 36, 'm', 'thane');
+Query OK, 1 row affected (0.25 sec)
+
+mysql> insert into student values(40, 'kavita', 55, 'f', 'kalyan');
+Query OK, 1 row affected (0.21 sec)
+
+mysql> select * from student;
++-----+--------+-------+--------+----------+
+| rno | name   | marks | gender | location |
++-----+--------+-------+--------+----------+
+|  10 | amit   |    99 | m      | thane    |
+|  20 | sunil  |    36 | m      | thane    |
+|  30 | smita  |    86 | f      | kalyan   |
+|  40 | kavita |    55 | f      | kalyan   |
++-----+--------+-------+--------+----------+
+4 rows in set (0.03 sec)
+
+mysql> source G:\demo\MYSQL\thane12oct\f1.sql
+Database changed
+Query OK, 0 rows affected, 1 warning (0.21 sec)
+
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'c;
+end' at line 7
+mysql> source G:\demo\MYSQL\thane12oct\f1.sql
+Database changed
+Query OK, 0 rows affected, 1 warning (0.04 sec)
+
+Query OK, 0 rows affected (0.18 sec)
+
+mysql> select f1();
++------+
+| f1() |
++------+
+|    2 |
++------+
+1 row in set (0.16 sec)
+
+mysql> select f1() as count;
++-------+
+| count |
++-------+
+|     2 |
++-------+
+1 row in set (0.00 sec)
+
+mysql> source G:\demo\MYSQL\thane12oct\f2.sql
+Database changed
+Query OK, 0 rows affected, 1 warning (0.03 sec)
+
+Query OK, 0 rows affected (0.15 sec)
+
+mysql> select f2();
++------+
+| f2() |
++------+
+|    1 |
++------+
+1 row in set (0.00 sec)
+
+mysql> select f2() as failed student;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'student' at line 1
+mysql> source G:\demo\MYSQL\thane12oct\f3.sql
+Database changed
+Query OK, 0 rows affected, 1 warning (0.21 sec)
+
+Query OK, 0 rows affected (0.12 sec)
+
+mysql> select f3();
++------+
+| f3() |
++------+
+|    4 |
++------+
+1 row in set (0.00 sec)
+
+mysql> source G:\demo\MYSQL\thane12oct\f4.sql
+Database changed
+Query OK, 0 rows affected, 1 warning (0.14 sec)
+
+Query OK, 0 rows affected (0.19 sec)
+
+mysql> select f4();
++------+
+| f4() |
++------+
+|   99 |
++------+
+1 row in set (0.00 sec)
+
+mysql> source G:\demo\MYSQL\thane12oct\t10.sql
+Database changed
+ERROR 1050 (42S01): Table 'student' already exists
+Query OK, 0 rows affected (0.70 sec)
+
+Query OK, 0 rows affected (0.15 sec)
+
+mysql> source G:\demo\MYSQL\thane12oct\t10.sql
+Database changed
+Query OK, 0 rows affected (0.55 sec)
+
+Query OK, 0 rows affected (0.48 sec)
+
+Query OK, 0 rows affected, 1 warning (0.03 sec)
+
+Query OK, 0 rows affected, 1 warning (0.02 sec)
+
+Query OK, 0 rows affected, 1 warning (0.02 sec)
+
+Query OK, 0 rows affected, 1 warning (0.02 sec)
+
+Query OK, 0 rows affected, 1 warning (0.03 sec)
+
+Query OK, 0 rows affected (0.55 sec)
+
+Query OK, 0 rows affected (0.50 sec)
+
+Query OK, 0 rows affected (0.14 sec)
+
+Query OK, 0 rows affected (0.10 sec)
+
+Query OK, 0 rows affected (0.11 sec)
+
+Query OK, 0 rows affected (0.14 sec)
+
+Query OK, 0 rows affected (0.18 sec)
+
+mysql> insert into student values(10, 'k', 98, 'm', 'kalyan');
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> insert into student values(10, 'k', 98);
+Query OK, 1 row affected (0.13 sec)
+
+mysql> insert into student values(10, 'k', 98);
+ERROR 1062 (23000): Duplicate entry '10' for key 'PRIMARY'
+mysql> source G:\demo\MYSQL\thane12oct\e1.sql
+Query OK, 0 rows affected, 1 warning (0.07 sec)
+
+Query OK, 0 rows affected (0.54 sec)
+
+Query OK, 0 rows affected, 1 warning (0.07 sec)
+
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> select * from student;
++-----+------+-------+
+| rno | name | marks |
++-----+------+-------+
+|  10 | k    |    98 |
++-----+------+-------+
+1 row in set (0.00 sec)
+
+mysql> select * from student_bkup;
++-----+------+-------+
+| rno | name | marks |
++-----+------+-------+
+|  10 | k    |    98 |
++-----+------+-------+
+1 row in set (0.00 sec)
+
+mysql> insert into student values(21, 'pratham', 93);
+Query OK, 1 row affected (0.19 sec)
+
+mysql> select * from student;
++-----+---------+-------+
+| rno | name    | marks |
++-----+---------+-------+
+|  10 | k       |    98 |
+|  21 | pratham |    93 |
++-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> select * from student_audit;
++------+---------+-------+-----------+---------------------+
+| rno  | name    | marks | operation | op_time             |
++------+---------+-------+-----------+---------------------+
+|   10 | k       |    98 | insert    | 2019-10-12 20:12:00 |
+|   21 | pratham |    93 | insert    | 2019-10-12 20:34:10 |
++------+---------+-------+-----------+---------------------+
+2 rows in set (0.00 sec)
+
+mysql> insert into student values(11, 'ronit', 89);
+Query OK, 1 row affected (0.21 sec)
+
+mysql> insert into student values(12, 'anuj', 86);
+Query OK, 1 row affected (0.07 sec)
+
+mysql> select * from student;
++-----+---------+-------+
+| rno | name    | marks |
++-----+---------+-------+
+|  10 | k       |    98 |
+|  11 | ronit   |    89 |
+|  12 | anuj    |    86 |
+|  21 | pratham |    93 |
++-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> select * from student_bkup;
++-----+---------+-------+
+| rno | name    | marks |
++-----+---------+-------+
+|  10 | k       |    98 |
+|  11 | ronit   |    89 |
+|  21 | pratham |    93 |
++-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> source G:\demo\MYSQL\thane12oct\t5.sql
+Database changed
+Query OK, 0 rows affected, 1 warning (0.07 sec)
+
+Query OK, 0 rows affected, 1 warning (0.03 sec)
+
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'exits buca' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'create table sa(accno int primary key, name varchar(30), balance double)
+
+delimi' at line 2
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'end if' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'end $$
+delimiter' at line 1
+ERROR 1146 (42S02): Table 'thane12oct.ca' doesn't exist
+ERROR 1146 (42S02): Table 'thane12oct.sa' doesn't exist
+ERROR 1146 (42S02): Table 'thane12oct.ca' doesn't exist
+ERROR 1146 (42S02): Table 'thane12oct.sa' doesn't exist
+Query OK, 0 rows affected, 1 warning (0.04 sec)
+
+Query OK, 0 rows affected (0.28 sec)
+
+mysql> source G:\demo\MYSQL\thane12oct\t5.sql
+Database changed
+Query OK, 0 rows affected, 1 warning (0.05 sec)
+
+Query OK, 0 rows affected, 1 warning (0.02 sec)
+
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'exits buca' at line 1
+Query OK, 0 rows affected (1.58 sec)
+
+Query OK, 0 rows affected (0.64 sec)
+
+Query OK, 0 rows affected (0.25 sec)
+
+Query OK, 1 row affected (0.11 sec)
+
+Query OK, 1 row affected (0.09 sec)
+
++-------+------+---------+
+| accno | name | balance |
++-------+------+---------+
+|   101 | TCS  |    5000 |
++-------+------+---------+
+1 row in set (0.00 sec)
+
++-------+------+---------+
+| accno | name | balance |
++-------+------+---------+
+|   101 | TCS  |    2500 |
++-------+------+---------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.41 sec)
+
+Query OK, 0 rows affected (0.13 sec)
+
+mysql> source G:\demo\MYSQL\thane12oct\t5.sql
+Database changed
+Query OK, 0 rows affected (1.93 sec)
+
+Query OK, 0 rows affected (0.32 sec)
+
+Query OK, 0 rows affected, 1 warning (0.02 sec)
+
+Query OK, 0 rows affected (0.59 sec)
+
+Query OK, 0 rows affected (0.60 sec)
+
+Query OK, 0 rows affected (0.10 sec)
+
+Query OK, 1 row affected (0.06 sec)
+
+Query OK, 1 row affected (0.05 sec)
+
++-------+------+---------+
+| accno | name | balance |
++-------+------+---------+
+|   101 | TCS  |    5000 |
++-------+------+---------+
+1 row in set (0.00 sec)
+
++-------+------+---------+
+| accno | name | balance |
++-------+------+---------+
+|   101 | TCS  |    2500 |
++-------+------+---------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.09 sec)
+
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> call p20(101, 2000);
++----------------------+
+| MSG                  |
++----------------------+
+| transaction success  |
++----------------------+
+1 row in set (0.10 sec)
+
+Query OK, 0 rows affected (0.12 sec)
+
+mysql> select * from ca;
++-------+------+---------+
+| accno | name | balance |
++-------+------+---------+
+|   101 | TCS  |    3000 |
++-------+------+---------+
+1 row in set (0.00 sec)
+
+mysql> select * from sa;
++-------+------+---------+
+| accno | name | balance |
++-------+------+---------+
+|   101 | TCS  |    4500 |
++-------+------+---------+
+1 row in set (0.00 sec)
+
+mysql> call p20(101, 1500);
++---------------------+
+| MSG                 |
++---------------------+
+| transaction failure |
++---------------------+
+1 row in set (0.10 sec)
+
+Query OK, 0 rows affected (0.11 sec)
+
+mysql> select * from ca;
++-------+------+---------+
+| accno | name | balance |
++-------+------+---------+
+|   101 | TCS  |    3000 |
++-------+------+---------+
+1 row in set (0.00 sec)
+
+mysql> select * from sa;
++-------+------+---------+
+| accno | name | balance |
++-------+------+---------+
+|   101 | TCS  |    4500 |
++-------+------+---------+
+1 row in set (0.00 sec)
+
+mysql>

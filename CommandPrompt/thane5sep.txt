@@ -1,0 +1,541 @@
+Microsoft Windows [Version 10.0.17134.950]
+(c) 2018 Microsoft Corporation. All rights reserved.
+
+C:\Program Files\MySQL\MySQL Server 8.0\bin>create database if not exists thane5sep;
+'create' is not recognized as an internal or external command,
+operable program or batch file.
+
+C:\Program Files\MySQL\MySQL Server 8.0\bin>mysql -u root -p abc456
+Enter password: ******
+ERROR 1049 (42000): Unknown database 'abc456'
+
+C:\Program Files\MySQL\MySQL Server 8.0\bin>mysql -u root -pabc456
+mysql: [Warning] Using a password on the command line interface can be insecure.
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 9
+Server version: 8.0.11 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> create database if not exists thane5sep;
+Query OK, 1 row affected (0.28 sec)
+
+mysql> use thane5sep;
+Database changed
+mysql> create table stu_java (name varchar(10));
+Query OK, 0 rows affected (0.69 sec)
+
+mysql> create table stu_python (name varchar(10));
+Query OK, 0 rows affected (0.72 sec)
+
+mysql> insert into stu_java values("amit"), ("ramesh"), ("sumit"),
+    -> ("seema");
+Query OK, 4 rows affected (0.20 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> insert into stu_python values("amit"), ("sunil"),("seema");
+Query OK, 3 rows affected (0.68 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from stu_java;
++--------+
+| name   |
++--------+
+| amit   |
+| ramesh |
+| sumit  |
+| seema  |
++--------+
+4 rows in set (0.00 sec)
+
+mysql> select * from stu_python;
++-------+
+| name  |
++-------+
+| amit  |
+| sunil |
+| seema |
++-------+
+3 rows in set (0.00 sec)
+
+mysql> select name from stu_java
+    -> union
+    -> select name from stu_python;
++--------+
+| name   |
++--------+
+| amit   |
+| ramesh |
+| sumit  |
+| seema  |
+| sunil  |
++--------+
+5 rows in set (0.12 sec)
+
+mysql> select name from stu_java
+    -> union all
+    -> select name from stu_python;
++--------+
+| name   |
++--------+
+| amit   |
+| ramesh |
+| sumit  |
+| seema  |
+| amit   |
+| sunil  |
+| seema  |
++--------+
+7 rows in set (0.00 sec)
+
+mysql> select name from stu_java
+    -> union all
+    -> select name from stu_python
+    -> order by name;
++--------+
+| name   |
++--------+
+| amit   |
+| amit   |
+| ramesh |
+| seema  |
+| seema  |
+| sumit  |
+| sunil  |
++--------+
+7 rows in set (0.02 sec)
+
+mysql> select * from stu_java;
++--------+
+| name   |
++--------+
+| amit   |
+| ramesh |
+| sumit  |
+| seema  |
++--------+
+4 rows in set (0.00 sec)
+
+mysql> select from stu_python;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'from stu_python' at line 1
+mysql> select * from stu_python;
++-------+
+| name  |
++-------+
+| amit  |
+| sunil |
+| seema |
++-------+
+3 rows in set (0.00 sec)
+
+mysql> select stu_java.name
+    -> from stu_java inner join stu_python
+    -> on stu_java.name = stu_python.name;
++-------+
+| name  |
++-------+
+| amit  |
+| seema |
++-------+
+2 rows in set (0.00 sec)
+
+mysql> select stu_java.name
+    -> from stu_java outer join stu_python
+    -> on stu_java.name = stu_python.name;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'outer join stu_python
+on stu_java.name = stu_python.name' at line 2
+mysql> select stu_java.name
+    -> from stu_java left join stu_python
+    -> on stu_java.name = stu_python.name;
++--------+
+| name   |
++--------+
+| amit   |
+| seema  |
+| ramesh |
+| sumit  |
++--------+
+4 rows in set (0.01 sec)
+
+mysql> select stu_java.name, stu_python.name
+    -> from stu_java left outer join stu_python
+    -> on stu_java.name = stu_python.name
+    -> where stu_python.name is null;
++--------+------+
+| name   | name |
++--------+------+
+| ramesh | NULL |
+| sumit  | NULL |
++--------+------+
+2 rows in set (0.00 sec)
+
+mysql> select stu_java.name
+    -> from stu_java left outer join stu_python
+    -> on stu_java.name = stu_python.name
+    -> where stu_python.name is null;
++--------+
+| name   |
++--------+
+| ramesh |
+| sumit  |
++--------+
+2 rows in set (0.00 sec)
+
+mysql> create table student like thane31aug,student;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',student' at line 1
+mysql> create table student like thane31aug.student;
+Query OK, 0 rows affected (0.81 sec)
+
+mysql> insert into student select * from thane31aug.student;
+Query OK, 7 rows affected (0.23 sec)
+Records: 7  Duplicates: 0  Warnings: 0
+
+mysql> select * from student;
++-----+--------+-------+--------+----------+------+
+| rno | name   | marks | gender | location | did  |
++-----+--------+-------+--------+----------+------+
+|  10 | amit   |    99 | M      | thane    |    3 |
+|  11 | geeta  |    92 | F      | mumbai   |    4 |
+|  12 | virat  |    82 | M      | mumbai   |    4 |
+|  13 | Dhoni  |  NULL | M      | thane    |    3 |
+|  14 | sunita |    77 | F      | mumbai   |    4 |
+|  15 | kavita |    88 | F      | thane    |    3 |
+|  16 | kevin  |    65 | M      | mumbai   |    4 |
++-----+--------+-------+--------+----------+------+
+7 rows in set (0.00 sec)
+
+mysql> select * from student
+    -> count (name);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(name)' at line 2
+mysql> select sum(marks) from student;
++------------+
+| sum(marks) |
++------------+
+|        503 |
++------------+
+1 row in set (0.03 sec)
+
+mysql> select sum(marks) TOTAL from student;
++-------+
+| TOTAL |
++-------+
+|   503 |
++-------+
+1 row in set (0.00 sec)
+
+mysql> select sum(marks(m)) TOTAL from student;
+ERROR 1305 (42000): FUNCTION thane5sep.marks does not exist
+mysql> select sum(marks(m)) TOTAL from student where gender = m;
+ERROR 1305 (42000): FUNCTION thane5sep.marks does not exist
+mysql> select sum(marks) TOTAL from student where gender = m;
+ERROR 1054 (42S22): Unknown column 'm' in 'where clause'
+mysql> select sum(marks) TOTAL from student where gender = 'm';
++-------+
+| TOTAL |
++-------+
+|   246 |
++-------+
+1 row in set (0.00 sec)
+
+mysql> select sum(marks) TOTAL from student where gender = 'f';
++-------+
+| TOTAL |
++-------+
+|   257 |
++-------+
+1 row in set (0.00 sec)
+
+mysql> select gender, sum(marks) TOTAL from student group by gender;
++--------+-------+
+| gender | TOTAL |
++--------+-------+
+| M      |   246 |
+| F      |   257 |
++--------+-------+
+2 rows in set (0.00 sec)
+
+mysql> select gender,location, sum(marks) TOTAL from student group by gender,location;
++--------+----------+-------+
+| gender | location | TOTAL |
++--------+----------+-------+
+| M      | thane    |    99 |
+| F      | mumbai   |   169 |
+| M      | mumbai   |   147 |
+| F      | thane    |    88 |
++--------+----------+-------+
+4 rows in set (0.00 sec)
+
+mysql> select gender,location, sum(marks) TOTAL from student group by gender,location order by;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> select gender,location, sum(marks) TOTAL from student group by gender,location order by total;
++--------+----------+-------+
+| gender | location | TOTAL |
++--------+----------+-------+
+| F      | thane    |    88 |
+| M      | thane    |    99 |
+| M      | mumbai   |   147 |
+| F      | mumbai   |   169 |
++--------+----------+-------+
+4 rows in set (0.00 sec)
+
+mysql> select gender,location, sum(marks) TOTAL from student group by gender,location having sum(marks) > 100 order by total;
++--------+----------+-------+
+| gender | location | TOTAL |
++--------+----------+-------+
+| M      | mumbai   |   147 |
+| F      | mumbai   |   169 |
++--------+----------+-------+
+2 rows in set (0.00 sec)
+
+mysql> select gender,location, sum(marks) TOTAL from student group by gender,location order by gender;
++--------+----------+-------+
+| gender | location | TOTAL |
++--------+----------+-------+
+| M      | mumbai   |   147 |
+| M      | thane    |    99 |
+| F      | mumbai   |   169 |
+| F      | thane    |    88 |
++--------+----------+-------+
+4 rows in set (0.00 sec)
+
+mysql> select avg(marks) from student;
++------------+
+| avg(marks) |
++------------+
+|    83.8333 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select avg(marks) Average from student;
++---------+
+| Average |
++---------+
+| 83.8333 |
++---------+
+1 row in set (0.00 sec)
+
+mysql> select avg(marks) Average from student where gender = 'm';
++---------+
+| Average |
++---------+
+| 82.0000 |
++---------+
+1 row in set (0.00 sec)
+
+mysql> select avg(marks) Average from student where gender = 'f';
++---------+
+| Average |
++---------+
+| 85.6667 |
++---------+
+1 row in set (0.00 sec)
+
+mysql> select gender, avg(marks) Average from student group by gender;
++--------+---------+
+| gender | Average |
++--------+---------+
+| M      | 82.0000 |
+| F      | 85.6667 |
++--------+---------+
+2 rows in set (0.00 sec)
+
+mysql> select gender,location, avg(marks) Average from student group by gender, location;
++--------+----------+---------+
+| gender | location | Average |
++--------+----------+---------+
+| M      | thane    | 99.0000 |
+| F      | mumbai   | 84.5000 |
+| M      | mumbai   | 73.5000 |
+| F      | thane    | 88.0000 |
++--------+----------+---------+
+4 rows in set (0.00 sec)
+
+mysql> select gender,location, avg(marks) Average from student group by gender, location order by AVERAGE desc;
++--------+----------+---------+
+| gender | location | Average |
++--------+----------+---------+
+| M      | thane    | 99.0000 |
+| F      | thane    | 88.0000 |
+| F      | mumbai   | 84.5000 |
+| M      | mumbai   | 73.5000 |
++--------+----------+---------+
+4 rows in set (0.00 sec)
+
+mysql> select max(marks), min(marks) from student;
++------------+------------+
+| max(marks) | min(marks) |
++------------+------------+
+|         99 |         65 |
++------------+------------+
+1 row in set (0.00 sec)
+
+mysql> select gender, location, max(marks), min(marks) from student group by gender, location;
++--------+----------+------------+------------+
+| gender | location | max(marks) | min(marks) |
++--------+----------+------------+------------+
+| M      | thane    |         99 |         99 |
+| F      | mumbai   |         92 |         77 |
+| M      | mumbai   |         82 |         65 |
+| F      | thane    |         88 |         88 |
++--------+----------+------------+------------+
+4 rows in set (0.00 sec)
+
+mysql> select gender, location, max(marks) Max_Marks, min(marks) Min_Marks from student group by gender, location;
++--------+----------+-----------+-----------+
+| gender | location | Max_Marks | Min_Marks |
++--------+----------+-----------+-----------+
+| M      | thane    |        99 |        99 |
+| F      | mumbai   |        92 |        77 |
+| M      | mumbai   |        82 |        65 |
+| F      | thane    |        88 |        88 |
++--------+----------+-----------+-----------+
+4 rows in set (0.00 sec)
+
+mysql> select count(*) from student;
++----------+
+| count(*) |
++----------+
+|        7 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select count(*) from student where marks > 90;
++----------+
+| count(*) |
++----------+
+|        2 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select count('m'), count('f') from student;
++------------+------------+
+| count('m') | count('f') |
++------------+------------+
+|          7 |          7 |
++------------+------------+
+1 row in set (0.00 sec)
+
+mysql> select gender, count(*) from student group by gender;
++--------+----------+
+| gender | count(*) |
++--------+----------+
+| M      |        4 |
+| F      |        3 |
++--------+----------+
+2 rows in set (0.00 sec)
+
+mysql> select gender,location, count(*) from student group by gender, location;
++--------+----------+----------+
+| gender | location | count(*) |
++--------+----------+----------+
+| M      | thane    |        2 |
+| F      | mumbai   |        2 |
+| M      | mumbai   |        2 |
+| F      | thane    |        1 |
++--------+----------+----------+
+4 rows in set (0.00 sec)
+
+mysql> select gender,location, count(*) from student group by  location;
++--------+----------+----------+
+| gender | location | count(*) |
++--------+----------+----------+
+| M      | thane    |        3 |
+| F      | mumbai   |        4 |
++--------+----------+----------+
+2 rows in set (0.00 sec)
+
+mysql> select  count(*) from student where marks = null;
++----------+
+| count(*) |
++----------+
+|        0 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select  count(*) from student where marks is null;
++----------+
+| count(*) |
++----------+
+|        1 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select 2 from student;
++---+
+| 2 |
++---+
+| 2 |
+| 2 |
+| 2 |
+| 2 |
+| 2 |
+| 2 |
+| 2 |
++---+
+7 rows in set (0.00 sec)
+
+mysql> select 1,2,3 from student;
++---+---+---+
+| 1 | 2 | 3 |
++---+---+---+
+| 1 | 2 | 3 |
+| 1 | 2 | 3 |
+| 1 | 2 | 3 |
+| 1 | 2 | 3 |
+| 1 | 2 | 3 |
+| 1 | 2 | 3 |
+| 1 | 2 | 3 |
++---+---+---+
+7 rows in set (0.00 sec)
+
+mysql> select null from student;
++------+
+| NULL |
++------+
+| NULL |
+| NULL |
+| NULL |
+| NULL |
+| NULL |
+| NULL |
+| NULL |
++------+
+7 rows in set (0.00 sec)
+
+mysql> select *, 2 from student;
++-----+--------+-------+--------+----------+------+---+
+| rno | name   | marks | gender | location | did  | 2 |
++-----+--------+-------+--------+----------+------+---+
+|  10 | amit   |    99 | M      | thane    |    3 | 2 |
+|  11 | geeta  |    92 | F      | mumbai   |    4 | 2 |
+|  12 | virat  |    82 | M      | mumbai   |    4 | 2 |
+|  13 | Dhoni  |  NULL | M      | thane    |    3 | 2 |
+|  14 | sunita |    77 | F      | mumbai   |    4 | 2 |
+|  15 | kavita |    88 | F      | thane    |    3 | 2 |
+|  16 | kevin  |    65 | M      | mumbai   |    4 | 2 |
++-----+--------+-------+--------+----------+------+---+
+7 rows in set (0.00 sec)
+
+mysql> select max(name), min(name) from student;
++-----------+-----------+
+| max(name) | min(name) |
++-----------+-----------+
+| virat     | amit      |
++-----------+-----------+
+1 row in set (0.00 sec)
+
+mysql> select sum(name), avg(name) from student;
++-----------+-----------+
+| sum(name) | avg(name) |
++-----------+-----------+
+|         0 |         0 |
++-----------+-----------+
+1 row in set, 14 warnings (0.01 sec)
+
+mysql>

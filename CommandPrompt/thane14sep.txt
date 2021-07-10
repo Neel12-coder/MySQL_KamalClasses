@@ -1,0 +1,769 @@
+Microsoft Windows [Version 10.0.17134.950]
+(c) 2018 Microsoft Corporation. All rights reserved.
+
+C:\Program Files\MySQL\MySQL Server 8.0\bin>mysql -u root -pabc456;
+mysql: [Warning] Using a password on the command line interface can be insecure.
+ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)
+
+C:\Program Files\MySQL\MySQL Server 8.0\bin>mysql -u root -pabc456
+mysql: [Warning] Using a password on the command line interface can be insecure.
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 9
+Server version: 8.0.11 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> create database if not exists thane14sep;
+Query OK, 1 row affected (1.52 sec)
+
+mysql> use thane14sep;
+Database changed
+mysql> show databases like thane%
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'thane%' at line 1
+mysql> create table student as select * from thane31aug.student;
+Query OK, 7 rows affected (1.50 sec)
+Records: 7  Duplicates: 0  Warnings: 0
+
+mysql> create table department as select * from thane31aug.department;
+Query OK, 4 rows affected (0.83 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> select * from student;
++-----+--------+-------+--------+----------+------+
+| rno | name   | marks | gender | location | did  |
++-----+--------+-------+--------+----------+------+
+|  10 | amit   |    99 | M      | thane    |    3 |
+|  11 | geeta  |    92 | F      | mumbai   |    4 |
+|  12 | virat  |    82 | M      | mumbai   |    4 |
+|  13 | Dhoni  |  NULL | M      | thane    |    3 |
+|  14 | sunita |    77 | F      | mumbai   |    4 |
+|  15 | kavita |    88 | F      | thane    |    3 |
+|  16 | kevin  |    65 | M      | mumbai   |    4 |
++-----+--------+-------+--------+----------+------+
+7 rows in set (0.00 sec)
+
+mysql> select * from department;
++-----+-----------+--------+------------+
+| did | dname     | dhod   | reports_to |
++-----+-----------+--------+------------+
+|   1 | MGT       | suresh |       NULL |
+|   2 | principal | ramesh |          1 |
+|   3 | comps     | seema  |          2 |
+|   4 | IT        | rakesh |          2 |
++-----+-----------+--------+------------+
+4 rows in set (0.00 sec)
+
+mysql> create table student_thane like student;
+Query OK, 0 rows affected (0.57 sec)
+
+mysql> insert into student_thane
+    -> select * from student where location = 'thane';
+Query OK, 3 rows affected (0.30 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from student_thane;
++-----+--------+-------+--------+----------+------+
+| rno | name   | marks | gender | location | did  |
++-----+--------+-------+--------+----------+------+
+|  10 | amit   |    99 | M      | thane    |    3 |
+|  13 | Dhoni  |  NULL | M      | thane    |    3 |
+|  15 | kavita |    88 | F      | thane    |    3 |
++-----+--------+-------+--------+----------+------+
+3 rows in set (0.00 sec)
+
+mysql> create table student_thane_male like student_thane;
+Query OK, 0 rows affected (0.64 sec)
+
+mysql> insert into stydent_thane where gender = 'm';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where gender = 'm'' at line 1
+mysql> insert into student_thane where gender = 'm';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where gender = 'm'' at line 1
+mysql> insert into student_thane_male
+    -> select * from student_thane where gender = 'm';
+Query OK, 2 rows affected (0.19 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> delete from student_thane where gender = 'm';
+Query OK, 2 rows affected (0.15 sec)
+
+mysql> rename table student_thane to student_thane_female;
+Query OK, 0 rows affected (0.69 sec)
+
+mysql> select * from student;
++-----+--------+-------+--------+----------+------+
+| rno | name   | marks | gender | location | did  |
++-----+--------+-------+--------+----------+------+
+|  10 | amit   |    99 | M      | thane    |    3 |
+|  11 | geeta  |    92 | F      | mumbai   |    4 |
+|  12 | virat  |    82 | M      | mumbai   |    4 |
+|  13 | Dhoni  |  NULL | M      | thane    |    3 |
+|  14 | sunita |    77 | F      | mumbai   |    4 |
+|  15 | kavita |    88 | F      | thane    |    3 |
+|  16 | kevin  |    65 | M      | mumbai   |    4 |
++-----+--------+-------+--------+----------+------+
+7 rows in set (0.00 sec)
+
+mysql> select * from student where marks = (select max(marks) from student);
++-----+------+-------+--------+----------+------+
+| rno | name | marks | gender | location | did  |
++-----+------+-------+--------+----------+------+
+|  10 | amit |    99 | M      | thane    |    3 |
++-----+------+-------+--------+----------+------+
+1 row in set (0.02 sec)
+
+mysql> select * from student where marks = (select max(marks) from student) where location = 'thane';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where location = 'thane'' at line 1
+mysql> select * from student where marks = (select max(marks) from student where location = 'thane');
++-----+------+-------+--------+----------+------+
+| rno | name | marks | gender | location | did  |
++-----+------+-------+--------+----------+------+
+|  10 | amit |    99 | M      | thane    |    3 |
++-----+------+-------+--------+----------+------+
+1 row in set (0.00 sec)
+
+mysql> select * from student where marks = (select max(marks) from student where location = 'mumbai');
++-----+-------+-------+--------+----------+------+
+| rno | name  | marks | gender | location | did  |
++-----+-------+-------+--------+----------+------+
+|  11 | geeta |    92 | F      | mumbai   |    4 |
++-----+-------+-------+--------+----------+------+
+1 row in set (0.00 sec)
+
+mysql> select * from student where marks = (select max(marks) from student where location = 'mumbai' and location = 'thane');
+Empty set (0.00 sec)
+
+mysql> select * from student where marks =ANY (select max(marks) from student group by location);
++-----+-------+-------+--------+----------+------+
+| rno | name  | marks | gender | location | did  |
++-----+-------+-------+--------+----------+------+
+|  10 | amit  |    99 | M      | thane    |    3 |
+|  11 | geeta |    92 | F      | mumbai   |    4 |
++-----+-------+-------+--------+----------+------+
+2 rows in set (0.10 sec)
+
+mysql> select * from student where marks =SOME (select max(marks) from student group by location);
++-----+-------+-------+--------+----------+------+
+| rno | name  | marks | gender | location | did  |
++-----+-------+-------+--------+----------+------+
+|  10 | amit  |    99 | M      | thane    |    3 |
+|  11 | geeta |    92 | F      | mumbai   |    4 |
++-----+-------+-------+--------+----------+------+
+2 rows in set (0.00 sec)
+
+mysql> select * from student where marks = (select max(marks) from student group by location);
+ERROR 1242 (21000): Subquery returns more than 1 row
+mysql> select * from student where marks IN (select max(marks) from student group by location);
++-----+-------+-------+--------+----------+------+
+| rno | name  | marks | gender | location | did  |
++-----+-------+-------+--------+----------+------+
+|  10 | amit  |    99 | M      | thane    |    3 |
+|  11 | geeta |    92 | F      | mumbai   |    4 |
++-----+-------+-------+--------+----------+------+
+2 rows in set (0.00 sec)
+
+mysql> create table if not exists department
+    -> (dept_name varchgar
+    -> hdep;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'varchgar
+hdep' at line 2
+mysql> create table if not exists department
+    -> (dept_name varchar(30) primary key,
+    -> dept_bldg int,
+    -> dept_hod varchar(30)
+    -> );
+Query OK, 0 rows affected, 1 warning (0.12 sec)
+
+mysql> create table if not exists employee
+    -> ( id int primary key,
+    -> name varchar(30),
+    -> dept_name varchar(30),
+    -> salary decimal(8, 2),
+    -> gender enum('m', 'f'),
+    -> foreign key(dept_name) references department(dept_name)
+    -> );
+ERROR 1215 (HY000): Cannot add foreign key constraint
+mysql> create table if not exists employee
+    -> ( id int primary key,
+    -> name varchar(30),
+    -> dept_name varchar(30),
+    -> salary decimal(8, 2),
+    -> gender enum('m', 'f'),
+    -> foreign key(dept_name) references department_emp(dept_name)
+    -> );
+ERROR 1215 (HY000): Cannot add foreign key constraint
+mysql> create table department_emp
+    -> (dept_name varchar(30) primary key,
+    -> dept_bldg int,
+    -> dept_hod varchar(30));
+Query OK, 0 rows affected (0.55 sec)
+
+mysql> create table if not exists employee
+    -> ( id int primary key,
+    -> name varchar(30),
+    -> dept_name varchar(30),
+    -> salary decimal(8, 2),
+    -> gender enum('m', 'f'),
+    -> foreign key(dept_name) references department_emp(dept_name)
+    -> );
+Query OK, 0 rows affected (0.64 sec)
+
+mysql> insert into department_emp values('comps', 1, 'surya');
+Query OK, 1 row affected (0.13 sec)
+
+mysql> insert into department_emp values('extc', 2, 'vaishnavi');
+Query OK, 1 row affected (0.14 sec)
+
+mysql> insert into department_emp values('IT', 1, 'raja);
+    '>
+    '>
+    '> ;
+    '> '^C
+mysql> insert into department_emp values('IT', 1, 'raja');
+Query OK, 1 row affected (0.09 sec)
+
+mysql> insert into employee values(1, 'amit', 'comps', 4500, 'm');
+Query OK, 1 row affected (0.21 sec)
+
+mysql>  insert into employee values(2, 'sumit', 'comps', 5000, 'm');
+Query OK, 1 row affected (0.23 sec)
+
+mysql>  insert into employee values(3, 'reena', 'comps', 4500, 'f');
+Query OK, 1 row affected (0.12 sec)
+
+mysql>  insert into employee values(4, 'nikhil', 'IT', 3500, 'm');
+Query OK, 1 row affected (0.21 sec)
+
+mysql>  insert into employee values(5, 'seema', 'extc', 2500, 'f);
+    '> ^C
+mysql>  insert into employee values(5, 'seema', 'extc', 2500, 'f');
+Query OK, 1 row affected (0.86 sec)
+
+mysql>  insert into employee values(6, 'rakesh', 'extc', 4200, 'm');
+Query OK, 1 row affected (0.19 sec)
+
+mysql>  insert into employee values(7, 'rinkesh', 'comps', 6200, 'm');
+Query OK, 1 row affected (0.14 sec)
+
+mysql>  insert into employee values(8, 'pooja', 'extc', 2200, 'f');
+Query OK, 1 row affected (0.16 sec)
+
+mysql>  insert into employee values(9, 'saurabh', 'IT', 4800, 'm');
+Query OK, 1 row affected (0.12 sec)
+
+mysql>  insert into employee values(10, 'rahul', 'extc', 5800, 'm');
+Query OK, 1 row affected (0.20 sec)
+
+mysql> select * from department_emp;
++-----------+-----------+-----------+
+| dept_name | dept_bldg | dept_hod  |
++-----------+-----------+-----------+
+| comps     |         1 | surya     |
+| extc      |         2 | vaishnavi |
+| IT        |         1 | raja      |
++-----------+-----------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> select * from employee;
++----+---------+-----------+---------+--------+
+| id | name    | dept_name | salary  | gender |
++----+---------+-----------+---------+--------+
+|  1 | amit    | comps     | 4500.00 | m      |
+|  2 | sumit   | comps     | 5000.00 | m      |
+|  3 | reena   | comps     | 4500.00 | f      |
+|  4 | nikhil  | IT        | 3500.00 | m      |
+|  5 | seema   | extc      | 2500.00 | f      |
+|  6 | rakesh  | extc      | 4200.00 | m      |
+|  7 | rinkesh | comps     | 6200.00 | m      |
+|  8 | pooja   | extc      | 2200.00 | f      |
+|  9 | saurabh | IT        | 4800.00 | m      |
+| 10 | rahul   | extc      | 5800.00 | m      |
++----+---------+-----------+---------+--------+
+10 rows in set (0.00 sec)
+
+mysql> update employee set dept_name = 'IT' where id = 6;
+Query OK, 1 row affected (0.26 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from employee;
++----+---------+-----------+---------+--------+
+| id | name    | dept_name | salary  | gender |
++----+---------+-----------+---------+--------+
+|  1 | amit    | comps     | 4500.00 | m      |
+|  2 | sumit   | comps     | 5000.00 | m      |
+|  3 | reena   | comps     | 4500.00 | f      |
+|  4 | nikhil  | IT        | 3500.00 | m      |
+|  5 | seema   | extc      | 2500.00 | f      |
+|  6 | rakesh  | IT        | 4200.00 | m      |
+|  7 | rinkesh | comps     | 6200.00 | m      |
+|  8 | pooja   | extc      | 2200.00 | f      |
+|  9 | saurabh | IT        | 4800.00 | m      |
+| 10 | rahul   | extc      | 5800.00 | m      |
++----+---------+-----------+---------+--------+
+10 rows in set (0.00 sec)
+
+mysql> select * from employee
+    -> where salary = (select min(salary) from employee);
++----+-------+-----------+---------+--------+
+| id | name  | dept_name | salary  | gender |
++----+-------+-----------+---------+--------+
+|  8 | pooja | extc      | 2200.00 | f      |
++----+-------+-----------+---------+--------+
+1 row in set (0.00 sec)
+
+mysql> select * from employee
+    -> where dept_name = (select dept_name from department
+    -> where dept_hod = 'surya');
+ERROR 1054 (42S22): Unknown column 'dept_hod' in 'where clause'
+mysql> select * from employee
+    -> where dept_name = (select dept_name from department_emp
+    -> where dept_hod = 'surya');
++----+---------+-----------+---------+--------+
+| id | name    | dept_name | salary  | gender |
++----+---------+-----------+---------+--------+
+|  1 | amit    | comps     | 4500.00 | m      |
+|  2 | sumit   | comps     | 5000.00 | m      |
+|  3 | reena   | comps     | 4500.00 | f      |
+|  7 | rinkesh | comps     | 6200.00 | m      |
++----+---------+-----------+---------+--------+
+4 rows in set (0.00 sec)
+
+mysql> select * from employee
+    -> where dept_name = (select dept_name from department_emp
+    -> where dept_bldg = 1);
+ERROR 1242 (21000): Subquery returns more than 1 row
+mysql> select * from employee
+    -> where dept_name IN (select dept_name from department_emp
+    -> where dept_bldg = 1);
++----+---------+-----------+---------+--------+
+| id | name    | dept_name | salary  | gender |
++----+---------+-----------+---------+--------+
+|  1 | amit    | comps     | 4500.00 | m      |
+|  2 | sumit   | comps     | 5000.00 | m      |
+|  3 | reena   | comps     | 4500.00 | f      |
+|  7 | rinkesh | comps     | 6200.00 | m      |
+|  4 | nikhil  | IT        | 3500.00 | m      |
+|  6 | rakesh  | IT        | 4200.00 | m      |
+|  9 | saurabh | IT        | 4800.00 | m      |
++----+---------+-----------+---------+--------+
+7 rows in set (0.00 sec)
+
+mysql> select * from employee
+    -> where salary in (select max(salary) from employee
+    -> group by dept_name)
+    -> group by dept_name;
++----+---------+-----------+---------+--------+
+| id | name    | dept_name | salary  | gender |
++----+---------+-----------+---------+--------+
+|  7 | rinkesh | comps     | 6200.00 | m      |
+| 10 | rahul   | extc      | 5800.00 | m      |
+|  9 | saurabh | IT        | 4800.00 | m      |
++----+---------+-----------+---------+--------+
+3 rows in set (0.11 sec)
+
+mysql> select * from employee
+    -> where salary in (select max(salary) from employee
+    -> group by dept_name)
+    -> group by dept_name
+    -> order by salary;
++----+---------+-----------+---------+--------+
+| id | name    | dept_name | salary  | gender |
++----+---------+-----------+---------+--------+
+|  9 | saurabh | IT        | 4800.00 | m      |
+| 10 | rahul   | extc      | 5800.00 | m      |
+|  7 | rinkesh | comps     | 6200.00 | m      |
++----+---------+-----------+---------+--------+
+3 rows in set (0.11 sec)
+
+mysql> create table employee_comps like employee;
+Query OK, 0 rows affected (0.81 sec)
+
+mysql> insert into employee_comps
+    -> select * from employee
+    -> where dept_name = 'comps';
+Query OK, 4 rows affected (0.21 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> select * from employee;
++----+---------+-----------+---------+--------+
+| id | name    | dept_name | salary  | gender |
++----+---------+-----------+---------+--------+
+|  1 | amit    | comps     | 4500.00 | m      |
+|  2 | sumit   | comps     | 5000.00 | m      |
+|  3 | reena   | comps     | 4500.00 | f      |
+|  4 | nikhil  | IT        | 3500.00 | m      |
+|  5 | seema   | extc      | 2500.00 | f      |
+|  6 | rakesh  | IT        | 4200.00 | m      |
+|  7 | rinkesh | comps     | 6200.00 | m      |
+|  8 | pooja   | extc      | 2200.00 | f      |
+|  9 | saurabh | IT        | 4800.00 | m      |
+| 10 | rahul   | extc      | 5800.00 | m      |
++----+---------+-----------+---------+--------+
+10 rows in set (0.00 sec)
+
+mysql> create view v10 as select * from emloyee;
+ERROR 1146 (42S02): Table 'thane14sep.emloyee' doesn't exist
+mysql> create view v10 as select * from employee;
+Query OK, 0 rows affected (0.22 sec)
+
+mysql> select * from v10;
++----+---------+-----------+---------+--------+
+| id | name    | dept_name | salary  | gender |
++----+---------+-----------+---------+--------+
+|  1 | amit    | comps     | 4500.00 | m      |
+|  2 | sumit   | comps     | 5000.00 | m      |
+|  3 | reena   | comps     | 4500.00 | f      |
+|  4 | nikhil  | IT        | 3500.00 | m      |
+|  5 | seema   | extc      | 2500.00 | f      |
+|  6 | rakesh  | IT        | 4200.00 | m      |
+|  7 | rinkesh | comps     | 6200.00 | m      |
+|  8 | pooja   | extc      | 2200.00 | f      |
+|  9 | saurabh | IT        | 4800.00 | m      |
+| 10 | rahul   | extc      | 5800.00 | m      |
++----+---------+-----------+---------+--------+
+10 rows in set (0.03 sec)
+
+mysql> create or replace view v12 as select id, name from employee;
+Query OK, 0 rows affected (0.19 sec)
+
+mysql> select * from v12;
++----+---------+
+| id | name    |
++----+---------+
+|  1 | amit    |
+|  2 | sumit   |
+|  3 | reena   |
+|  4 | nikhil  |
+|  5 | seema   |
+|  6 | rakesh  |
+|  7 | rinkesh |
+|  8 | pooja   |
+|  9 | saurabh |
+| 10 | rahul   |
++----+---------+
+10 rows in set (0.00 sec)
+
+mysql> create or replace view v14(rno, name) as select id, name from employee;
+Query OK, 0 rows affected (0.22 sec)
+
+mysql> create or replace view v16
+    -> as select id as rno, name from employee;
+Query OK, 0 rows affected (0.19 sec)
+
+mysql> insert into v16 values(200, 'kamal');
+Query OK, 1 row affected (0.25 sec)
+
+mysql> select * from employee;
++-----+---------+-----------+---------+--------+
+| id  | name    | dept_name | salary  | gender |
++-----+---------+-----------+---------+--------+
+|   1 | amit    | comps     | 4500.00 | m      |
+|   2 | sumit   | comps     | 5000.00 | m      |
+|   3 | reena   | comps     | 4500.00 | f      |
+|   4 | nikhil  | IT        | 3500.00 | m      |
+|   5 | seema   | extc      | 2500.00 | f      |
+|   6 | rakesh  | IT        | 4200.00 | m      |
+|   7 | rinkesh | comps     | 6200.00 | m      |
+|   8 | pooja   | extc      | 2200.00 | f      |
+|   9 | saurabh | IT        | 4800.00 | m      |
+|  10 | rahul   | extc      | 5800.00 | m      |
+| 200 | kamal   | NULL      |    NULL | NULL   |
++-----+---------+-----------+---------+--------+
+11 rows in set (0.00 sec)
+
+mysql> create or replace view v18 as select * from employee
+    -> order by salary limit 3;
+Query OK, 0 rows affected (0.22 sec)
+
+mysql> create or replace view v18 as select * from employee
+    -> where salary is not null
+    -> order by salary limit 3;
+Query OK, 0 rows affected (0.30 sec)
+
+mysql> select * from v18;
++----+--------+-----------+---------+--------+
+| id | name   | dept_name | salary  | gender |
++----+--------+-----------+---------+--------+
+|  8 | pooja  | extc      | 2200.00 | f      |
+|  5 | seema  | extc      | 2500.00 | f      |
+|  4 | nikhil | IT        | 3500.00 | m      |
++----+--------+-----------+---------+--------+
+3 rows in set (0.03 sec)
+
+mysql> insert into view v18 values(120, 'prathamesh');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'v18 values(120, 'prathamesh')' at line 1
+mysql> alter view v18
+    -> as select * from employee
+    -> where salary is not null
+    -> order by salary desc limit 3;
+Query OK, 0 rows affected (0.25 sec)
+
+mysql> select * from v18;
++----+---------+-----------+---------+--------+
+| id | name    | dept_name | salary  | gender |
++----+---------+-----------+---------+--------+
+|  7 | rinkesh | comps     | 6200.00 | m      |
+| 10 | rahul   | extc      | 5800.00 | m      |
+|  2 | sumit   | comps     | 5000.00 | m      |
++----+---------+-----------+---------+--------+
+3 rows in set (0.00 sec)
+
+mysql> check table v18/G;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '/G' at line 1
+mysql> check table v18\G;
+*************************** 1. row ***************************
+   Table: thane14sep.v18
+      Op: check
+Msg_type: status
+Msg_text: OK
+1 row in set (0.02 sec)
+
+ERROR:
+No query specified
+
+mysql> alter table employee
+    -> change name ename varchar(30);
+Query OK, 0 rows affected (0.88 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> check table v18\G;
+*************************** 1. row ***************************
+   Table: thane14sep.v18
+      Op: check
+Msg_type: Error
+Msg_text: View 'thane14sep.v18' references invalid table(s) or column(s) or function(s) or definer/invoker of view lack rights to use them
+*************************** 2. row ***************************
+   Table: thane14sep.v18
+      Op: check
+Msg_type: error
+Msg_text: Corrupt
+2 rows in set (0.00 sec)
+
+ERROR:
+No query specified
+
+mysql> show tables;
++----------------------+
+| Tables_in_thane14sep |
++----------------------+
+| department           |
+| department_emp       |
+| employee             |
+| employee_comps       |
+| student              |
+| student_thane_female |
+| student_thane_male   |
+| v10                  |
+| v12                  |
+| v14                  |
+| v16                  |
+| v18                  |
++----------------------+
+12 rows in set (0.25 sec)
+
+mysql> drop view v10;
+Query OK, 0 rows affected (0.20 sec)
+
+mysql> rename v18 to top_3;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'v18 to top_3' at line 1
+mysql> rename table v18 to top_3;
+Query OK, 0 rows affected (0.23 sec)
+
+
+mysql> create table if not exists products
+    -> ( id int primary key,
+    -> pname varchar(30),
+    -> pprice decimal(6,2),
+    -> pstock int );
+Query OK, 0 rows affected (0.78 sec)
+
+mysql> desc products;
++--------+--------------+------+-----+---------+-------+
+| Field  | Type         | Null | Key | Default | Extra |
++--------+--------------+------+-----+---------+-------+
+| id     | int(11)      | NO   | PRI | NULL    |       |
+| pname  | varchar(30)  | YES  |     | NULL    |       |
+| pprice | decimal(6,2) | YES  |     | NULL    |       |
+| pstock | int(11)      | YES  |     | NULL    |       |
++--------+--------------+------+-----+---------+-------+
+4 rows in set (0.07 sec)
+
+mysql> insert into products values(101, 'hdd', 5200, 10);
+Query OK, 1 row affected (0.16 sec)
+
+mysql> insert into products values(102, 'cd', 100, 20);
+Query OK, 1 row affected (0.14 sec)
+
+mysql> insert into products values(103, 'speaker', 1500, 5);
+Query OK, 1 row affected (0.23 sec)
+
+mysql> insert into products values(104, 'keyboard', 850, 10);
+Query OK, 1 row affected (0.18 sec)
+
+mysql> insert into products values(105, 'sd card', 475, 0);
+Query OK, 1 row affected (0.22 sec)
+
+mysql> select * from products;
++-----+----------+---------+--------+
+| id  | pname    | pprice  | pstock |
++-----+----------+---------+--------+
+| 101 | hdd      | 5200.00 |     10 |
+| 102 | cd       |  100.00 |     20 |
+| 103 | speaker  | 1500.00 |      5 |
+| 104 | keyboard |  850.00 |     10 |
+| 105 | sd card  |  475.00 |      0 |
++-----+----------+---------+--------+
+5 rows in set (0.00 sec)
+
+mysql> create or replace view prod_over as
+    -> select * from products where pstock = 0;
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> select * from prod_over;
++-----+---------+--------+--------+
+| id  | pname   | pprice | pstock |
++-----+---------+--------+--------+
+| 105 | sd card | 475.00 |      0 |
++-----+---------+--------+--------+
+1 row in set (0.00 sec)
+
+mysql> create or replace view prod_list as
+    -> select pname from products;
+Query OK, 0 rows affected (0.17 sec)
+
+mysql> select * from products;
++-----+----------+---------+--------+
+| id  | pname    | pprice  | pstock |
++-----+----------+---------+--------+
+| 101 | hdd      | 5200.00 |     10 |
+| 102 | cd       |  100.00 |     20 |
+| 103 | speaker  | 1500.00 |      5 |
+| 104 | keyboard |  850.00 |     10 |
+| 105 | sd card  |  475.00 |      0 |
++-----+----------+---------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select * from prod_list;
++----------+
+| pname    |
++----------+
+| hdd      |
+| cd       |
+| speaker  |
+| keyboard |
+| sd card  |
++----------+
+5 rows in set (0.00 sec)
+
+mysql> create or replace view prod_price as
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> create or replace view prod_price1(product_name, product_price) as
+    -> select pname, pprice from prod;
+ERROR 1146 (42S02): Table 'thane14sep.prod' doesn't exist
+mysql> create or replace view prod_price1(product_name, product_price) as
+    -> select pname, pprice from products;
+Query OK, 0 rows affected (0.23 sec)
+
+mysql> create or replace view prod_price2 as
+    -> select pname as product_name, pprice as product_price from products;
+Query OK, 0 rows affected (0.15 sec)
+
+mysql> select * from prod_price1;
++--------------+---------------+
+| product_name | product_price |
++--------------+---------------+
+| hdd          |       5200.00 |
+| cd           |        100.00 |
+| speaker      |       1500.00 |
+| keyboard     |        850.00 |
+| sd card      |        475.00 |
++--------------+---------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from prod_price2;
++--------------+---------------+
+| product_name | product_price |
++--------------+---------------+
+| hdd          |       5200.00 |
+| cd           |        100.00 |
+| speaker      |       1500.00 |
+| keyboard     |        850.00 |
+| sd card      |        475.00 |
++--------------+---------------+
+5 rows in set (0.00 sec)
+
+mysql> create or replace prod_storage as
+    -> select * from products
+    -> where pname in ('hdd', 'cd', 'sd card');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'prod_storage as
+select * from products
+where pname in ('hdd', 'cd', 'sd card')' at line 1
+mysql> create or replace view prod_storage as
+    -> select * from products
+    -> where pname in ('hdd', 'cd', 'sd card');
+Query OK, 0 rows affected (0.12 sec)
+
+mysql> select * from prod_storage;
++-----+---------+---------+--------+
+| id  | pname   | pprice  | pstock |
++-----+---------+---------+--------+
+| 101 | hdd     | 5200.00 |     10 |
+| 102 | cd      |  100.00 |     20 |
+| 105 | sd card |  475.00 |      0 |
++-----+---------+---------+--------+
+3 rows in set (0.00 sec)
+
+mysql> create or replace view prod_over
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> create or replace view prod_top2
+    -> as select pname, pprice
+    -> from products
+    -> order by pprice desc limit 2;
+Query OK, 0 rows affected (0.16 sec)
+
+mysql> select * from prod_top2;
++---------+---------+
+| pname   | pprice  |
++---------+---------+
+| hdd     | 5200.00 |
+| speaker | 1500.00 |
++---------+---------+
+2 rows in set (0.00 sec)
+
+mysql> create or replace view prod_top2
+    -> as select pname, pprice, pstock
+    -> from products
+    -> order by pprice desc limit 2;
+Query OK, 0 rows affected (0.15 sec)
+
+mysql> select * from prod_top2;
++---------+---------+--------+
+| pname   | pprice  | pstock |
++---------+---------+--------+
+| hdd     | 5200.00 |     10 |
+| speaker | 1500.00 |      5 |
++---------+---------+--------+
+2 rows in set (0.00 sec)
+
+mysql> create or replace view prod_top3
+    -> as select pname, pprice, pstock
+    -> from products
+    -> order by pprice limit 2;
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> select * from prod_top3;
++---------+--------+--------+
+| pname   | pprice | pstock |
++---------+--------+--------+
+| cd      | 100.00 |     20 |
+| sd card | 475.00 |      0 |
++---------+--------+--------+
+2 rows in set (0.00 sec)

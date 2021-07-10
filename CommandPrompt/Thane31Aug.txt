@@ -1,0 +1,884 @@
+Microsoft Windows [Version 10.0.17134.950]
+(c) 2018 Microsoft Corporation. All rights reserved.
+
+C:\Program Files\MySQL\MySQL Server 8.0\bin>mysql -u root -pabc456
+mysql: [Warning] Using a password on the command line interface can be insecure.
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 10
+Server version: 8.0.11 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> create databse if not exists thane31aug;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'databse if not exists thane31aug' at line 1
+mysql> create database if not exists thane31aug;
+Query OK, 1 row affected (0.82 sec)
+
+mysql> use thane31aug;
+Database changed
+mysql> create table if not exists department(did int primary key,)
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 1
+mysql> create table if not exists department(did int primary key,
+    -> dname varchar(30), dhod varchar(30), reports_to int);
+Query OK, 0 rows affected (0.48 sec)
+
+mysql> create table if not exists student(rno int primary key,
+    -> name varchar(30), marks int unsigned, gender enum
+    ->
+    -> ('M','F'), location varchar(30) default 'thane', did int,
+    -> foreign key (did) references department(did) );
+Query OK, 0 rows affected (0.54 sec)
+
+mysql> desc department;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| did        | int(11)     | NO   | PRI | NULL    |       |
+| dname      | varchar(30) | YES  |     | NULL    |       |
+| dhod       | varchar(30) | YES  |     | NULL    |       |
+| reports_to | int(11)     | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+
+mysql> desc student;
++----------+------------------+------+-----+---------+-------+
+| Field    | Type             | Null | Key | Default | Extra |
++----------+------------------+------+-----+---------+-------+
+| rno      | int(11)          | NO   | PRI | NULL    |       |
+| name     | varchar(30)      | YES  |     | NULL    |       |
+| marks    | int(10) unsigned | YES  |     | NULL    |       |
+| gender   | enum('M','F')    | YES  |     | NULL    |       |
+| location | varchar(30)      | YES  |     | thane   |       |
+| did      | int(11)          | YES  | MUL | NULL    |       |
++----------+------------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> insert into department values(1, 'MGT', 'suresh', null), (2, 'principal', 'ramesh', 1),
+    -> (3, 'comps', 'seema', 2), (4, 'IT', 'rakesh', '2');
+Query OK, 4 rows affected (1.64 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> insert into student values(10, 'amit', 99, 'm', default, 3);
+Query OK, 1 row affected (0.26 sec)
+
+mysql> insert into student values(11, 'geeta', 92, 'f', 'mumbai', 4);
+Query OK, 1 row affected (0.19 sec)
+
+mysql> insert into student values(12, 'virat', 82, 'm', 'mumbai', 4);
+Query OK, 1 row affected (0.22 sec)
+
+mysql> insert into student values(13, 'Dhoni', 100, 'm', 'thane', 3);
+Query OK, 1 row affected (0.27 sec)
+
+mysql> insert into student values(14, 'sunita', 77, 'f', 'mumbai', 4);
+Query OK, 1 row affected (0.19 sec)
+
+mysql> insert into student values(15, 'kavita', 88, 'f', default, 3);
+Query OK, 1 row affected (0.24 sec)
+
+mysql> insert into student values(16, 'kevin', 65, 'm', 'mumbai', 4);
+Query OK, 1 row affected (0.11 sec)
+
+mysql> select * from department;
++-----+-----------+--------+------------+
+| did | dname     | dhod   | reports_to |
++-----+-----------+--------+------------+
+|   1 | MGT       | suresh |       NULL |
+|   2 | principal | ramesh |          1 |
+|   3 | comps     | seema  |          2 |
+|   4 | IT        | rakesh |          2 |
++-----+-----------+--------+------------+
+4 rows in set (0.00 sec)
+
+mysql> select * from student;
++-----+--------+-------+--------+----------+------+
+| rno | name   | marks | gender | location | did  |
++-----+--------+-------+--------+----------+------+
+|  10 | amit   |    99 | M      | thane    |    3 |
+|  11 | geeta  |    92 | F      | mumbai   |    4 |
+|  12 | virat  |    82 | M      | mumbai   |    4 |
+|  13 | Dhoni  |   100 | M      | thane    |    3 |
+|  14 | sunita |    77 | F      | mumbai   |    4 |
+|  15 | kavita |    88 | F      | thane    |    3 |
+|  16 | kevin  |    65 | M      | mumbai   |    4 |
++-----+--------+-------+--------+----------+------+
+7 rows in set (0.00 sec)
+
+mysql> select rno, marks from student;
++-----+-------+
+| rno | marks |
++-----+-------+
+|  10 |    99 |
+|  11 |    92 |
+|  12 |    82 |
+|  13 |   100 |
+|  14 |    77 |
+|  15 |    88 |
+|  16 |    65 |
++-----+-------+
+7 rows in set (0.00 sec)
+
+mysql> select rno, marks - 5 from student;
++-----+-----------+
+| rno | marks - 5 |
++-----+-----------+
+|  10 |        94 |
+|  11 |        87 |
+|  12 |        77 |
+|  13 |        95 |
+|  14 |        72 |
+|  15 |        83 |
+|  16 |        60 |
++-----+-----------+
+7 rows in set (0.09 sec)
+
+mysql> select rno, marks - 5 as "score" from student;
++-----+-------+
+| rno | score |
++-----+-------+
+|  10 |    94 |
+|  11 |    87 |
+|  12 |    77 |
+|  13 |    95 |
+|  14 |    72 |
+|  15 |    83 |
+|  16 |    60 |
++-----+-------+
+7 rows in set (0.00 sec)
+
+mysql> select rno as "Roll_Number", marks - 5 as "score" from student;
++-------------+-------+
+| Roll_Number | score |
++-------------+-------+
+|          10 |    94 |
+|          11 |    87 |
+|          12 |    77 |
+|          13 |    95 |
+|          14 |    72 |
+|          15 |    83 |
+|          16 |    60 |
++-------------+-------+
+7 rows in set (0.00 sec)
+
+mysql> select concat(name, "has scored", marks) as INFO from student;
++--------------------+
+| INFO               |
++--------------------+
+| amithas scored99   |
+| geetahas scored92  |
+| virathas scored82  |
+| Dhonihas scored100 |
+| sunitahas scored77 |
+| kavitahas scored88 |
+| kevinhas scored65  |
++--------------------+
+7 rows in set (0.00 sec)
+
+mysql> update student set marks = null where rno = 13;
+Query OK, 1 row affected (0.21 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from student;
++-----+--------+-------+--------+----------+------+
+| rno | name   | marks | gender | location | did  |
++-----+--------+-------+--------+----------+------+
+|  10 | amit   |    99 | M      | thane    |    3 |
+|  11 | geeta  |    92 | F      | mumbai   |    4 |
+|  12 | virat  |    82 | M      | mumbai   |    4 |
+|  13 | Dhoni  |  NULL | M      | thane    |    3 |
+|  14 | sunita |    77 | F      | mumbai   |    4 |
+|  15 | kavita |    88 | F      | thane    |    3 |
+|  16 | kevin  |    65 | M      | mumbai   |    4 |
++-----+--------+-------+--------+----------+------+
+7 rows in set (0.00 sec)
+
+mysql> select concat
+    -> (name, "has scored", ifnull(marks, 0))
+    -> as INFO from student;
++--------------------+
+| INFO               |
++--------------------+
+| amithas scored99   |
+| geetahas scored92  |
+| virathas scored82  |
+| Dhonihas scored0   |
+| sunitahas scored77 |
+| kavitahas scored88 |
+| kevinhas scored65  |
++--------------------+
+7 rows in set (0.00 sec)
+
+mysql> select location from student;
++----------+
+| location |
++----------+
+| thane    |
+| mumbai   |
+| mumbai   |
+| thane    |
+| mumbai   |
+| thane    |
+| mumbai   |
++----------+
+7 rows in set (0.00 sec)
+
+mysql> select distinct location from student;
++----------+
+| location |
++----------+
+| thane    |
+| mumbai   |
++----------+
+2 rows in set (0.10 sec)
+
+mysql> select * from student
+    -> where marks > 90;
++-----+-------+-------+--------+----------+------+
+| rno | name  | marks | gender | location | did  |
++-----+-------+-------+--------+----------+------+
+|  10 | amit  |    99 | M      | thane    |    3 |
+|  11 | geeta |    92 | F      | mumbai   |    4 |
++-----+-------+-------+--------+----------+------+
+2 rows in set (0.00 sec)
+
+mysql> select * from student
+    -> where location = thane;
+ERROR 1054 (42S22): Unknown column 'thane' in 'where clause'
+mysql> select * from student
+    -> where location = 'thane';
++-----+--------+-------+--------+----------+------+
+| rno | name   | marks | gender | location | did  |
++-----+--------+-------+--------+----------+------+
+|  10 | amit   |    99 | M      | thane    |    3 |
+|  13 | Dhoni  |  NULL | M      | thane    |    3 |
+|  15 | kavita |    88 | F      | thane    |    3 |
++-----+--------+-------+--------+----------+------+
+3 rows in set (0.00 sec)
+
+mysql> select * from student
+    -> marks = null;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '= null' at line 2
+mysql> select * from student
+    -> where marks = null;
+Empty set (0.01 sec)
+
+mysql> select * from student where marks is null;
++-----+-------+-------+--------+----------+------+
+| rno | name  | marks | gender | location | did  |
++-----+-------+-------+--------+----------+------+
+|  13 | Dhoni |  NULL | M      | thane    |    3 |
++-----+-------+-------+--------+----------+------+
+1 row in set (0.00 sec)
+
+mysql> select * from student
+    -> where marks < 80 , location = 'mumbai';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ', location = 'mumbai'' at line 2
+mysql> select * from student
+    -> where marks < 80 and location = 'mumbai';
++-----+--------+-------+--------+----------+------+
+| rno | name   | marks | gender | location | did  |
++-----+--------+-------+--------+----------+------+
+|  14 | sunita |    77 | F      | mumbai   |    4 |
+|  16 | kevin  |    65 | M      | mumbai   |    4 |
++-----+--------+-------+--------+----------+------+
+2 rows in set (0.00 sec)
+
+mysql> select * from student
+    -> where location = 'thane' or loaction = 'kalyan';
+ERROR 1054 (42S22): Unknown column 'loaction' in 'where clause'
+mysql> select * from student
+    -> where location in ('thane', 'kalyan');
++-----+--------+-------+--------+----------+------+
+| rno | name   | marks | gender | location | did  |
++-----+--------+-------+--------+----------+------+
+|  10 | amit   |    99 | M      | thane    |    3 |
+|  13 | Dhoni  |  NULL | M      | thane    |    3 |
+|  15 | kavita |    88 | F      | thane    |    3 |
++-----+--------+-------+--------+----------+------+
+3 rows in set (0.09 sec)
+
+mysql> select * from student
+    -> where marks between 80 and 90;
++-----+--------+-------+--------+----------+------+
+| rno | name   | marks | gender | location | did  |
++-----+--------+-------+--------+----------+------+
+|  12 | virat  |    82 | M      | mumbai   |    4 |
+|  15 | kavita |    88 | F      | thane    |    3 |
++-----+--------+-------+--------+----------+------+
+2 rows in set (0.00 sec)
+
+mysql> select * from student
+    -> where marks>=80 and marks<=90;
++-----+--------+-------+--------+----------+------+
+| rno | name   | marks | gender | location | did  |
++-----+--------+-------+--------+----------+------+
+|  12 | virat  |    82 | M      | mumbai   |    4 |
+|  15 | kavita |    88 | F      | thane    |    3 |
++-----+--------+-------+--------+----------+------+
+2 rows in set (0.00 sec)
+
+mysql> select * from student
+    -> where name like 'a%';
++-----+------+-------+--------+----------+------+
+| rno | name | marks | gender | location | did  |
++-----+------+-------+--------+----------+------+
+|  10 | amit |    99 | M      | thane    |    3 |
++-----+------+-------+--------+----------+------+
+1 row in set (0.11 sec)
+
+mysql> select * from student
+    -> where name like '%i%';
++-----+--------+-------+--------+----------+------+
+| rno | name   | marks | gender | location | did  |
++-----+--------+-------+--------+----------+------+
+|  10 | amit   |    99 | M      | thane    |    3 |
+|  12 | virat  |    82 | M      | mumbai   |    4 |
+|  13 | Dhoni  |  NULL | M      | thane    |    3 |
+|  14 | sunita |    77 | F      | mumbai   |    4 |
+|  15 | kavita |    88 | F      | thane    |    3 |
+|  16 | kevin  |    65 | M      | mumbai   |    4 |
++-----+--------+-------+--------+----------+------+
+6 rows in set (0.00 sec)
+
+mysql> select * from student
+    -> where name like '%i_';
++-----+-------+-------+--------+----------+------+
+| rno | name  | marks | gender | location | did  |
++-----+-------+-------+--------+----------+------+
+|  10 | amit  |    99 | M      | thane    |    3 |
+|  16 | kevin |    65 | M      | mumbai   |    4 |
++-----+-------+-------+--------+----------+------+
+2 rows in set (0.00 sec)
+
+mysql> where name like '%t_';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where name like '%t_'' at line 1
+mysql> select * from student
+    -> where name like '%t_';
++-----+--------+-------+--------+----------+------+
+| rno | name   | marks | gender | location | did  |
++-----+--------+-------+--------+----------+------+
+|  11 | geeta  |    92 | F      | mumbai   |    4 |
+|  14 | sunita |    77 | F      | mumbai   |    4 |
+|  15 | kavita |    88 | F      | thane    |    3 |
++-----+--------+-------+--------+----------+------+
+3 rows in set (0.00 sec)
+
+mysql> select * from student
+    -> order by marks desc;
++-----+--------+-------+--------+----------+------+
+| rno | name   | marks | gender | location | did  |
++-----+--------+-------+--------+----------+------+
+|  10 | amit   |    99 | M      | thane    |    3 |
+|  11 | geeta  |    92 | F      | mumbai   |    4 |
+|  15 | kavita |    88 | F      | thane    |    3 |
+|  12 | virat  |    82 | M      | mumbai   |    4 |
+|  14 | sunita |    77 | F      | mumbai   |    4 |
+|  16 | kevin  |    65 | M      | mumbai   |    4 |
+|  13 | Dhoni  |  NULL | M      | thane    |    3 |
++-----+--------+-------+--------+----------+------+
+7 rows in set (0.00 sec)
+
+mysql> select * from student
+    -> order by marks descending;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'descending' at line 2
+mysql> select * from student
+    -> order by location desc;
++-----+--------+-------+--------+----------+------+
+| rno | name   | marks | gender | location | did  |
++-----+--------+-------+--------+----------+------+
+|  10 | amit   |    99 | M      | thane    |    3 |
+|  13 | Dhoni  |  NULL | M      | thane    |    3 |
+|  15 | kavita |    88 | F      | thane    |    3 |
+|  11 | geeta  |    92 | F      | mumbai   |    4 |
+|  12 | virat  |    82 | M      | mumbai   |    4 |
+|  14 | sunita |    77 | F      | mumbai   |    4 |
+|  16 | kevin  |    65 | M      | mumbai   |    4 |
++-----+--------+-------+--------+----------+------+
+7 rows in set (0.02 sec)
+
+mysql> select * from student
+    -> order by location desc, name desc;
++-----+--------+-------+--------+----------+------+
+| rno | name   | marks | gender | location | did  |
++-----+--------+-------+--------+----------+------+
+|  15 | kavita |    88 | F      | thane    |    3 |
+|  13 | Dhoni  |  NULL | M      | thane    |    3 |
+|  10 | amit   |    99 | M      | thane    |    3 |
+|  12 | virat  |    82 | M      | mumbai   |    4 |
+|  14 | sunita |    77 | F      | mumbai   |    4 |
+|  16 | kevin  |    65 | M      | mumbai   |    4 |
+|  11 | geeta  |    92 | F      | mumbai   |    4 |
++-----+--------+-------+--------+----------+------+
+7 rows in set (0.00 sec)
+
+mysql> select * from student
+    -> ;
++-----+--------+-------+--------+----------+------+
+| rno | name   | marks | gender | location | did  |
++-----+--------+-------+--------+----------+------+
+|  10 | amit   |    99 | M      | thane    |    3 |
+|  11 | geeta  |    92 | F      | mumbai   |    4 |
+|  12 | virat  |    82 | M      | mumbai   |    4 |
+|  13 | Dhoni  |  NULL | M      | thane    |    3 |
+|  14 | sunita |    77 | F      | mumbai   |    4 |
+|  15 | kavita |    88 | F      | thane    |    3 |
+|  16 | kevin  |    65 | M      | mumbai   |    4 |
++-----+--------+-------+--------+----------+------+
+7 rows in set (0.00 sec)
+
+mysql> select rno, name, loaction from student
+    -> order by 3 desc, 2 desc;
+ERROR 1054 (42S22): Unknown column 'loaction' in 'field list'
+mysql> select rno, name, location from student
+    -> order by 3 desc, 2 desc;
++-----+--------+----------+
+| rno | name   | location |
++-----+--------+----------+
+|  15 | kavita | thane    |
+|  13 | Dhoni  | thane    |
+|  10 | amit   | thane    |
+|  12 | virat  | mumbai   |
+|  14 | sunita | mumbai   |
+|  16 | kevin  | mumbai   |
+|  11 | geeta  | mumbai   |
++-----+--------+----------+
+7 rows in set (0.00 sec)
+
+mysql> select * from student
+    -> where marks = marks - 1.1
+    -> order by marks desc;
+Empty set (0.00 sec)
+
+mysql> select rno, name, marks * 0.90, gender, location, did from student
+    -> order by marks*0.90 desc;
++-----+--------+--------------+--------+----------+------+
+| rno | name   | marks * 0.90 | gender | location | did  |
++-----+--------+--------------+--------+----------+------+
+|  10 | amit   |        89.10 | M      | thane    |    3 |
+|  11 | geeta  |        82.80 | F      | mumbai   |    4 |
+|  15 | kavita |        79.20 | F      | thane    |    3 |
+|  12 | virat  |        73.80 | M      | mumbai   |    4 |
+|  14 | sunita |        69.30 | F      | mumbai   |    4 |
+|  16 | kevin  |        58.50 | M      | mumbai   |    4 |
+|  13 | Dhoni  |         NULL | M      | thane    |    3 |
++-----+--------+--------------+--------+----------+------+
+7 rows in set (0.00 sec)
+
+mysql> select rno, name, round(marks * 0.90) as SCORE, gender, location, did from student
+    -> order by SCORE desc;
++-----+--------+-------+--------+----------+------+
+| rno | name   | SCORE | gender | location | did  |
++-----+--------+-------+--------+----------+------+
+|  10 | amit   |    89 | M      | thane    |    3 |
+|  11 | geeta  |    83 | F      | mumbai   |    4 |
+|  15 | kavita |    79 | F      | thane    |    3 |
+|  12 | virat  |    74 | M      | mumbai   |    4 |
+|  14 | sunita |    69 | F      | mumbai   |    4 |
+|  16 | kevin  |    59 | M      | mumbai   |    4 |
+|  13 | Dhoni  |  NULL | M      | thane    |    3 |
++-----+--------+-------+--------+----------+------+
+7 rows in set (0.11 sec)
+
+mysql> select * from student
+    -> order by marks desc limit 1, 1;
++-----+-------+-------+--------+----------+------+
+| rno | name  | marks | gender | location | did  |
++-----+-------+-------+--------+----------+------+
+|  11 | geeta |    92 | F      | mumbai   |    4 |
++-----+-------+-------+--------+----------+------+
+1 row in set (0.00 sec)
+
+mysql> select * from student
+    -> order by marks desc limit 3;
++-----+--------+-------+--------+----------+------+
+| rno | name   | marks | gender | location | did  |
++-----+--------+-------+--------+----------+------+
+|  10 | amit   |    99 | M      | thane    |    3 |
+|  11 | geeta  |    92 | F      | mumbai   |    4 |
+|  15 | kavita |    88 | F      | thane    |    3 |
++-----+--------+-------+--------+----------+------+
+3 rows in set (0.00 sec)
+
+mysql> select * from student
+    -> order by marks desc limit 1 offset 1;
++-----+-------+-------+--------+----------+------+
+| rno | name  | marks | gender | location | did  |
++-----+-------+-------+--------+----------+------+
+|  11 | geeta |    92 | F      | mumbai   |    4 |
++-----+-------+-------+--------+----------+------+
+1 row in set (0.00 sec)
+
+mysql> select * from department;
++-----+-----------+--------+------------+
+| did | dname     | dhod   | reports_to |
++-----+-----------+--------+------------+
+|   1 | MGT       | suresh |       NULL |
+|   2 | principal | ramesh |          1 |
+|   3 | comps     | seema  |          2 |
+|   4 | IT        | rakesh |          2 |
++-----+-----------+--------+------------+
+4 rows in set (0.00 sec)
+
+mysql> select * from student;
++-----+--------+-------+--------+----------+------+
+| rno | name   | marks | gender | location | did  |
++-----+--------+-------+--------+----------+------+
+|  10 | amit   |    99 | M      | thane    |    3 |
+|  11 | geeta  |    92 | F      | mumbai   |    4 |
+|  12 | virat  |    82 | M      | mumbai   |    4 |
+|  13 | Dhoni  |  NULL | M      | thane    |    3 |
+|  14 | sunita |    77 | F      | mumbai   |    4 |
+|  15 | kavita |    88 | F      | thane    |    3 |
+|  16 | kevin  |    65 | M      | mumbai   |    4 |
++-----+--------+-------+--------+----------+------+
+7 rows in set (0.00 sec)
+
+mysql> select rno, name, dname, dhod from student, department;
++-----+--------+-----------+--------+
+| rno | name   | dname     | dhod   |
++-----+--------+-----------+--------+
+|  10 | amit   | MGT       | suresh |
+|  10 | amit   | principal | ramesh |
+|  10 | amit   | comps     | seema  |
+|  10 | amit   | IT        | rakesh |
+|  11 | geeta  | MGT       | suresh |
+|  11 | geeta  | principal | ramesh |
+|  11 | geeta  | comps     | seema  |
+|  11 | geeta  | IT        | rakesh |
+|  12 | virat  | MGT       | suresh |
+|  12 | virat  | principal | ramesh |
+|  12 | virat  | comps     | seema  |
+|  12 | virat  | IT        | rakesh |
+|  13 | Dhoni  | MGT       | suresh |
+|  13 | Dhoni  | principal | ramesh |
+|  13 | Dhoni  | comps     | seema  |
+|  13 | Dhoni  | IT        | rakesh |
+|  14 | sunita | MGT       | suresh |
+|  14 | sunita | principal | ramesh |
+|  14 | sunita | comps     | seema  |
+|  14 | sunita | IT        | rakesh |
+|  15 | kavita | MGT       | suresh |
+|  15 | kavita | principal | ramesh |
+|  15 | kavita | comps     | seema  |
+|  15 | kavita | IT        | rakesh |
+|  16 | kevin  | MGT       | suresh |
+|  16 | kevin  | principal | ramesh |
+|  16 | kevin  | comps     | seema  |
+|  16 | kevin  | IT        | rakesh |
++-----+--------+-----------+--------+
+28 rows in set (0.10 sec)
+
+mysql> select rno, name, dname, dhod from department,student;
++-----+--------+-----------+--------+
+| rno | name   | dname     | dhod   |
++-----+--------+-----------+--------+
+|  10 | amit   | MGT       | suresh |
+|  10 | amit   | principal | ramesh |
+|  10 | amit   | comps     | seema  |
+|  10 | amit   | IT        | rakesh |
+|  11 | geeta  | MGT       | suresh |
+|  11 | geeta  | principal | ramesh |
+|  11 | geeta  | comps     | seema  |
+|  11 | geeta  | IT        | rakesh |
+|  12 | virat  | MGT       | suresh |
+|  12 | virat  | principal | ramesh |
+|  12 | virat  | comps     | seema  |
+|  12 | virat  | IT        | rakesh |
+|  13 | Dhoni  | MGT       | suresh |
+|  13 | Dhoni  | principal | ramesh |
+|  13 | Dhoni  | comps     | seema  |
+|  13 | Dhoni  | IT        | rakesh |
+|  14 | sunita | MGT       | suresh |
+|  14 | sunita | principal | ramesh |
+|  14 | sunita | comps     | seema  |
+|  14 | sunita | IT        | rakesh |
+|  15 | kavita | MGT       | suresh |
+|  15 | kavita | principal | ramesh |
+|  15 | kavita | comps     | seema  |
+|  15 | kavita | IT        | rakesh |
+|  16 | kevin  | MGT       | suresh |
+|  16 | kevin  | principal | ramesh |
+|  16 | kevin  | comps     | seema  |
+|  16 | kevin  | IT        | rakesh |
++-----+--------+-----------+--------+
+28 rows in set (0.00 sec)
+
+mysql> select rno, name, dname, dhod from department CROSS JOIN student;
++-----+--------+-----------+--------+
+| rno | name   | dname     | dhod   |
++-----+--------+-----------+--------+
+|  10 | amit   | MGT       | suresh |
+|  10 | amit   | principal | ramesh |
+|  10 | amit   | comps     | seema  |
+|  10 | amit   | IT        | rakesh |
+|  11 | geeta  | MGT       | suresh |
+|  11 | geeta  | principal | ramesh |
+|  11 | geeta  | comps     | seema  |
+|  11 | geeta  | IT        | rakesh |
+|  12 | virat  | MGT       | suresh |
+|  12 | virat  | principal | ramesh |
+|  12 | virat  | comps     | seema  |
+|  12 | virat  | IT        | rakesh |
+|  13 | Dhoni  | MGT       | suresh |
+|  13 | Dhoni  | principal | ramesh |
+|  13 | Dhoni  | comps     | seema  |
+|  13 | Dhoni  | IT        | rakesh |
+|  14 | sunita | MGT       | suresh |
+|  14 | sunita | principal | ramesh |
+|  14 | sunita | comps     | seema  |
+|  14 | sunita | IT        | rakesh |
+|  15 | kavita | MGT       | suresh |
+|  15 | kavita | principal | ramesh |
+|  15 | kavita | comps     | seema  |
+|  15 | kavita | IT        | rakesh |
+|  16 | kevin  | MGT       | suresh |
+|  16 | kevin  | principal | ramesh |
+|  16 | kevin  | comps     | seema  |
+|  16 | kevin  | IT        | rakesh |
++-----+--------+-----------+--------+
+28 rows in set (0.00 sec)
+
+mysql> select rno, name, dname, dhod from department  JOIN student;
++-----+--------+-----------+--------+
+| rno | name   | dname     | dhod   |
++-----+--------+-----------+--------+
+|  10 | amit   | MGT       | suresh |
+|  10 | amit   | principal | ramesh |
+|  10 | amit   | comps     | seema  |
+|  10 | amit   | IT        | rakesh |
+|  11 | geeta  | MGT       | suresh |
+|  11 | geeta  | principal | ramesh |
+|  11 | geeta  | comps     | seema  |
+|  11 | geeta  | IT        | rakesh |
+|  12 | virat  | MGT       | suresh |
+|  12 | virat  | principal | ramesh |
+|  12 | virat  | comps     | seema  |
+|  12 | virat  | IT        | rakesh |
+|  13 | Dhoni  | MGT       | suresh |
+|  13 | Dhoni  | principal | ramesh |
+|  13 | Dhoni  | comps     | seema  |
+|  13 | Dhoni  | IT        | rakesh |
+|  14 | sunita | MGT       | suresh |
+|  14 | sunita | principal | ramesh |
+|  14 | sunita | comps     | seema  |
+|  14 | sunita | IT        | rakesh |
+|  15 | kavita | MGT       | suresh |
+|  15 | kavita | principal | ramesh |
+|  15 | kavita | comps     | seema  |
+|  15 | kavita | IT        | rakesh |
+|  16 | kevin  | MGT       | suresh |
+|  16 | kevin  | principal | ramesh |
+|  16 | kevin  | comps     | seema  |
+|  16 | kevin  | IT        | rakesh |
++-----+--------+-----------+--------+
+28 rows in set (0.00 sec)
+
+mysql> select name, dname
+    -> from student,department
+    -> where student.did = department.did;
++--------+-------+
+| name   | dname |
++--------+-------+
+| amit   | comps |
+| Dhoni  | comps |
+| kavita | comps |
+| geeta  | IT    |
+| virat  | IT    |
+| sunita | IT    |
+| kevin  | IT    |
++--------+-------+
+7 rows in set (0.00 sec)
+
+mysql> select name JOIN dname
+    -> from student JOIN department
+    -> where student.did = department.did;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'JOIN dname
+from student JOIN department
+where student.did = department.did' at line 1
+mysql> select name, dname
+    -> from student INNER JOIN department
+    -> where student.did = department.did;
++--------+-------+
+| name   | dname |
++--------+-------+
+| amit   | comps |
+| Dhoni  | comps |
+| kavita | comps |
+| geeta  | IT    |
+| virat  | IT    |
+| sunita | IT    |
+| kevin  | IT    |
++--------+-------+
+7 rows in set (0.00 sec)
+
+mysql> select name, dname
+    -> from student,department
+    -> ON student.did = department.did;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ON student.did = department.did' at line 3
+mysql> select name, dname
+    -> from student INNER JOIN department
+    -> ON student.did = department.did;
++--------+-------+
+| name   | dname |
++--------+-------+
+| amit   | comps |
+| Dhoni  | comps |
+| kavita | comps |
+| geeta  | IT    |
+| virat  | IT    |
+| sunita | IT    |
+| kevin  | IT    |
++--------+-------+
+7 rows in set (0.00 sec)
+
+mysql> select name, dname, did
+    -> from student, department
+    -> where student.did = department.did;
+ERROR 1052 (23000): Column 'did' in field list is ambiguous
+mysql> select name, dname, student.did
+    -> from student INNER JOIN department
+    -> ON student.did = department.did;
++--------+-------+------+
+| name   | dname | did  |
++--------+-------+------+
+| amit   | comps |    3 |
+| Dhoni  | comps |    3 |
+| kavita | comps |    3 |
+| geeta  | IT    |    4 |
+| virat  | IT    |    4 |
+| sunita | IT    |    4 |
+| kevin  | IT    |    4 |
++--------+-------+------+
+7 rows in set (0.00 sec)
+
+mysql> select a.name, b.dname, a.did
+    -> from student a department b
+    -> ON a.did = b.did;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'department b
+ON a.did = b.did' at line 2
+mysql> select a.name, b.dname, a.did
+    -> from student a INNER JOIN department b
+    -> ON a.did = b.did;
++--------+-------+------+
+| name   | dname | did  |
++--------+-------+------+
+| amit   | comps |    3 |
+| Dhoni  | comps |    3 |
+| kavita | comps |    3 |
+| geeta  | IT    |    4 |
+| virat  | IT    |    4 |
+| sunita | IT    |    4 |
+| kevin  | IT    |    4 |
++--------+-------+------+
+7 rows in set (0.00 sec)
+
+mysql> select * from student;
++-----+--------+-------+--------+----------+------+
+| rno | name   | marks | gender | location | did  |
++-----+--------+-------+--------+----------+------+
+|  10 | amit   |    99 | M      | thane    |    3 |
+|  11 | geeta  |    92 | F      | mumbai   |    4 |
+|  12 | virat  |    82 | M      | mumbai   |    4 |
+|  13 | Dhoni  |  NULL | M      | thane    |    3 |
+|  14 | sunita |    77 | F      | mumbai   |    4 |
+|  15 | kavita |    88 | F      | thane    |    3 |
+|  16 | kevin  |    65 | M      | mumbai   |    4 |
++-----+--------+-------+--------+----------+------+
+7 rows in set (0.00 sec)
+
+mysql> select rno, name,
+    -> from student, department
+    -> where student.did = department.did and dhod = 'rakesh';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'from student, department
+where student.did = department.did and dhod = 'rakesh'' at line 2
+mysql> select rno, name,
+    -> from student, department,
+    -> where student.did = department.did and dhod = 'rakesh';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'from student, department,
+where student.did = department.did and dhod = 'rakesh'' at line 2
+mysql> select rno, name
+    -> from student, department
+    -> where student.did = department.did and dhod = 'rakesh';
++-----+--------+
+| rno | name   |
++-----+--------+
+|  11 | geeta  |
+|  12 | virat  |
+|  14 | sunita |
+|  16 | kevin  |
++-----+--------+
+4 rows in set (0.00 sec)
+
+mysql> select * from department;
++-----+-----------+--------+------------+
+| did | dname     | dhod   | reports_to |
++-----+-----------+--------+------------+
+|   1 | MGT       | suresh |       NULL |
+|   2 | principal | ramesh |          1 |
+|   3 | comps     | seema  |          2 |
+|   4 | IT        | rakesh |          2 |
++-----+-----------+--------+------------+
+4 rows in set (0.00 sec)
+
+mysql> select dhod Emp, dhod mgr
+    -> from department a, department b
+    -> where a.reports_to = b.did;
+ERROR 1052 (23000): Column 'dhod' in field list is ambiguous
+mysql> select a.dhod Emp, b.dhod mgr
+    -> from department a, department b
+    -> where a.reports_to = b.did;
++--------+--------+
+| Emp    | mgr    |
++--------+--------+
+| ramesh | suresh |
+| seema  | ramesh |
+| rakesh | ramesh |
++--------+--------+
+3 rows in set (0.00 sec)
+
+mysql> select a.dhod Emp, b.dhod mgr
+    -> from department a INNER JOIN department b
+    -> ON a.reports_to = b.did;
++--------+--------+
+| Emp    | mgr    |
++--------+--------+
+| ramesh | suresh |
+| seema  | ramesh |
+| rakesh | ramesh |
++--------+--------+
+3 rows in set (0.00 sec)
+
+mysql> select a.dhod Emp, b.dhod mgr
+    -> from department a LEFT JOIN department b
+    -> ON a.reports_to = b.did;
++--------+--------+
+| Emp    | mgr    |
++--------+--------+
+| suresh | NULL   |
+| ramesh | suresh |
+| seema  | ramesh |
+| rakesh | ramesh |
++--------+--------+
+4 rows in set (0.00 sec)
+
+mysql> select a.dhod Emp, b.dhod mgr
+    -> from department a LEFT OUTER JOIN department b
+    -> ON a.reports_to = b.did;
++--------+--------+
+| Emp    | mgr    |
++--------+--------+
+| suresh | NULL   |
+| ramesh | suresh |
+| seema  | ramesh |
+| rakesh | ramesh |
++--------+--------+
+4 rows in set (0.00 sec)
+
+mysql>

@@ -1,0 +1,381 @@
+Microsoft Windows [Version 10.0.18362.356]
+(c) 2019 Microsoft Corporation. All rights reserved.
+
+C:\Program Files\MySQL\MySQL Server 8.0\bin>mysql -u root -pabc456
+mysql: [Warning] Using a password on the command line interface can be insecure.
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 9
+Server version: 8.0.11 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> create database if not exists thane5oct;
+Query OK, 1 row affected (0.42 sec)
+
+mysql> use thane5oct;
+Database changed
+mysql> create table if not exists emp
+    -> ( eid int unsigned primary key,
+    -> ename varchar(20),
+    -> esalary double);
+Query OK, 0 rows affected (1.10 sec)
+
+mysql> source G:\demo\MYSQL\thane5oct\p1.sql
+Database changed
+Query OK, 0 rows affected, 1 warning (0.41 sec)
+
+Query OK, 0 rows affected (0.14 sec)
+
+mysql> call p1(1, 'prathamesh', 70000);
++------------------+
+| SUCCESS          |
++------------------+
+| record inserted  |
++------------------+
+1 row in set (0.20 sec)
+
+Query OK, 0 rows affected (0.21 sec)
+
+mysql> call p1(-1, 'prathamesh', 70000);
+ERROR 1264 (22003): Out of range value for column 'eid' at row 1
+mysql> call p1(1, 'prathamesh', 70000);
++------------------------+
+| FAILURE                |
++------------------------+
+| record already exists  |
++------------------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> source G:\demo\MYSQL\thane5oct\p1.sql
+Database changed
+Query OK, 0 rows affected (0.22 sec)
+
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'declare exit handler for oor_case
+select 'eid is negative as FAILURE';
+
+insert i' at line 9
+mysql> source G:\demo\MYSQL\thane5oct\p1.sql
+Database changed
+Query OK, 0 rows affected, 1 warning (0.13 sec)
+
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'declare exit handler for oor_case
+select 'eid is negative' as FAILURE;
+
+insert i' at line 9
+mysql> call p1(-1, 'prathamesh', 70000);
+ERROR 1305 (42000): PROCEDURE thane5oct.p1 does not exist
+mysql> source G:\demo\MYSQL\thane5oct\p1.sql
+Database changed
+Query OK, 0 rows affected, 1 warning (0.13 sec)
+
+ERROR 1319 (42000): Undefined CONDITION: oor_case
+mysql> source G:\demo\MYSQL\thane5oct\p1.sql
+Database changed
+Query OK, 0 rows affected, 1 warning (0.13 sec)
+
+Query OK, 0 rows affected (0.12 sec)
+
+mysql> call p1(-1, 'prathamesh', 70000);
++-----------------+
+| FAILURE         |
++-----------------+
+| eid is negative |
++-----------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> source G:\demo\MYSQL\thane5oct\p1.sql
+Database changed
+Query OK, 0 rows affected (0.20 sec)
+
+Query OK, 0 rows affected (0.13 sec)
+
+mysql> call p1(1, null, 70000);
++---------------------+
+| FAILURE             |
++---------------------+
+| name cannot be null |
++---------------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> call p1(1, 'vufufuvcuqgcwckwbo', 70000);
++-----------------------+
+| FAILURE               |
++-----------------------+
+| record already exists |
++-----------------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> call p1(2, 'vufufuvcuqgcwckwbo', 70000);
++------------------+
+| SUCCESS          |
++------------------+
+| record inserted  |
++------------------+
+1 row in set (0.12 sec)
+
+Query OK, 0 rows affected (0.14 sec)
+
+mysql> call p1(2, 'vufufuvcuqgcwckwbodsc', 70000);
+ERROR 1265 (01000): Data truncated for column 'ename' at row 1
+mysql> source G:\demo\MYSQL\thane5oct\p1.sql
+Database changed
+Query OK, 0 rows affected (0.15 sec)
+
+Query OK, 0 rows affected (0.15 sec)
+
+mysql> call p1(1, 'vufufuvcuqgcwckwbo', 70000);
++-----------------------+
+| FAILURE               |
++-----------------------+
+| record already exists |
++-----------------------+
+1 row in set (0.01 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> call p1(2, 's', 70000);
++-------------------------------+
+| FAILURE                       |
++-------------------------------+
+| name should be atleast 2 char |
++-------------------------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> call p1(3, 'vufufuvcuqgcwckwbo', 70000);
++------------------+
+| SUCCESS          |
++------------------+
+| record inserted  |
++------------------+
+1 row in set (0.10 sec)
+
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> source G:\demo\MYSQL\thane5oct\p1.sql
+Database changed
+Query OK, 0 rows affected (0.20 sec)
+
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ';
+select 'salary should not be null ' as FAILURE;
+
+declare exit handler for SQLS' at line 26
+mysql> source G:\demo\MYSQL\thane5oct\p1.sql
+Database changed
+Query OK, 0 rows affected, 1 warning (0.04 sec)
+
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ';
+select 'salary should not be null' as FAILURE;
+
+declare exit handler for SQLST' at line 26
+mysql> source G:\demo\MYSQL\thane5oct\p1.sql
+Database changed
+Query OK, 0 rows affected, 1 warning (0.15 sec)
+
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'end if;
+
+
+if name is null then
+        signal SQLSTATE '12345';
+end if;
+
+if length(nam' at line 38
+mysql> source G:\demo\MYSQL\thane5oct\p1.sql
+Database changed
+Query OK, 0 rows affected, 1 warning (0.11 sec)
+
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> call p1(2, 'vufufu', null);
++---------------------------+
+| FAILURE                   |
++---------------------------+
+| salary should not be null |
++---------------------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> call p1(2, 'vufufu', 1000);
++--------------------------------+
+| FAILURE                        |
++--------------------------------+
+| salary should  be atleast 8000 |
++--------------------------------+
+1 row in set (0.09 sec)
+
+Query OK, 0 rows affected (0.11 sec)
+
+mysql> call p1(2, 's', 70000);
++-------------------------------+
+| FAILURE                       |
++-------------------------------+
+| name should be atleast 2 char |
++-------------------------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> source G:\demo\MYSQL\thane5oct\p4.sql
+Database changed
+Query OK, 0 rows affected, 1 warning (0.14 sec)
+
+Query OK, 0 rows affected (0.20 sec)
+
+mysql> call p4();
+ERROR 1318 (42000): Incorrect number of arguments for PROCEDURE thane5oct.p4; expected 1, got 0
+mysql> call p4(6);
++--------+
+| RESULT |
++--------+
+|      7 |
++--------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> source G:\demo\MYSQL\thane5oct\p4.sql
+Database changed
+Query OK, 0 rows affected (0.23 sec)
+
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> call p4(6);
++--------+
+| RESULT |
++--------+
+|     21 |
++--------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> source G:\demo\MYSQL\thane5oct\p5.sql
+Database changed
+Query OK, 0 rows affected, 1 warning (0.12 sec)
+
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '= sum + i;
+                set i = i + 1;
+        until i > n
+        end repeat;
+        select sum as RESULT;
+end' at line 10
+mysql> source G:\demo\MYSQL\thane5oct\p5.sql
+Database changed
+Query OK, 0 rows affected, 1 warning (0.04 sec)
+
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '= sum + i;
+                set i = i + 1;
+        until i>n
+        end repeat;
+        select sum as RESULT;
+end i' at line 10
+mysql> source G:\demo\MYSQL\thane5oct\p5.sql
+Database changed
+Query OK, 0 rows affected, 1 warning (0.04 sec)
+
+Query OK, 0 rows affected (0.14 sec)
+
+mysql> call p5(5);
++--------+
+| RESULT |
++--------+
+|     15 |
++--------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> source G:\demo\MYSQL\thane5oct\p6.sql
+Database changed
+Query OK, 0 rows affected, 1 warning (0.13 sec)
+
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'when
+                set digit = n % 10;
+                set sum = sum + digit;
+                set n = n DIV 10;
+        end whi' at line 9
+mysql> source G:\demo\MYSQL\thane5oct\p6.sql
+Database changed
+Query OK, 0 rows affected, 1 warning (0.13 sec)
+
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'when
+                set digit = n % 10;
+                set sum = sum + digit;
+                set n = n DIV 10;
+        end whi' at line 9
+mysql> source G:\demo\MYSQL\thane5oct\p6.sql
+Database changed
+Query OK, 0 rows affected, 1 warning (0.12 sec)
+
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'set digit = n % 10;
+                set sum = sum + digit;
+                set n = n DIV 10;
+        end while;
+        se' at line 10
+mysql> source G:\demo\MYSQL\thane5oct\p6.sql
+Database changed
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'set digit = n % 10;
+                set sum = sum + digit;
+                set n = n DIV 10;
+        end while;
+        se' at line 10
+mysql> source G:\demo\MYSQL\thane5oct\p6.sql
+Database changed
+Query OK, 0 rows affected, 1 warning (0.11 sec)
+
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'set digit = n % 10;
+                set sum = sum + digit;
+                set n = n DIV 10;
+        end while;
+        se' at line 10
+mysql> source G:\demo\MYSQL\thane5oct\p6.sql
+Database changed
+Query OK, 0 rows affected, 1 warning (0.04 sec)
+
+Query OK, 0 rows affected (0.15 sec)
+
+mysql> call p6(67);
++--------+
+| RESULT |
++--------+
+|     13 |
++--------+
+1 row in set (0.10 sec)
+
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> source G:\demo\MYSQL\thane5oct\p7.sql
+Database changed
+Query OK, 0 rows affected, 1 warning (0.05 sec)
+
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> call p7(57);
++--------+
+| RESULT |
++--------+
+|     75 |
++--------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+mysql>
